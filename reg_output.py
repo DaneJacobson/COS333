@@ -21,17 +21,17 @@ def IDcheck_conditionals(dictionary):
 
 # SELECT classid, dept, coursenum, area, title FROM classes, courses, crosslistings WHERE classes.courseid = crosslistings.courseid AND classes.courseid = courses.courseid AND dept LIKE '%cos%' ORDER BY dept, coursenum, classid ASC;
 
-def add_IDchecks(dictionary, stmtStr):
-	c0, c1 = IDcheck_conditionals(dictionary)
+# def add_IDchecks(dictionary, stmtStr):
+# 	c0, c1 = IDcheck_conditionals(dictionary)
 
-	if (c0 == 1 and c1 == 1):
-		stmtStr += ' WHERE classes.courseid = crosslistings.courseid AND ' + \
-				'classes.courseid = courses.courseid '
-	elif (c0 == 1):
-		stmtStr += ' WHERE classes.courseid = crosslistings.courseid'
-	elif (c1 == 1):
-		stmtStr += ' WHERE classes.courseid = courses.courseid'
-	return stmtStr
+# 	if (c0 == 1 and c1 == 1):
+# 		stmtStr += ' WHERE classes.courseid = crosslistings.courseid AND ' + \
+# 				'classes.courseid = courses.courseid '
+# 	elif (c0 == 1):
+# 		stmtStr += ' WHERE classes.courseid = crosslistings.courseid'
+# 	elif (c1 == 1):
+# 		stmtStr += ' WHERE classes.courseid = courses.courseid'
+# 	return stmtStr
 
 def dept_String(dept):
 	return " AND crosslistings.dept LIKE '%" + dept + "%'"
@@ -46,8 +46,8 @@ def title_String(title):
 	return " AND courses.title LIKE '%" + title + "%'"
 
 def produce_output(dictionary):
-	stmtStr = 'SELECT classid, dept, coursenum, area, title FROM classes, courses, crosslistings'
-	stmtStr = add_IDchecks(dictionary, stmtStr)
+	stmtStr = 'SELECT classid, dept, coursenum, area, title FROM classes, courses, crosslistings WHERE classes.courseid = crosslistings.courseid AND classes.courseid = courses.courseid'
+	# stmtStr = add_IDchecks(dictionary, stmtStr)
 
 	for key,value in dictionary.items():
 		if (key == '-dept'):
