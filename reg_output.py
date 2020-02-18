@@ -69,6 +69,7 @@ def error_databaseconnection(DATABASE_NAME):
 def print_output(cursor):
 	row = cursor.fetchone()
 	while row is not None:
+		print(str(row[0]) + '\t' + str(row[1]) + '\t' + str(row[2]) + '\t' + str(row[3]) + '\t' + str(row[4]) + '\t')
 		row = cursor.fetchone()
 
 def execute_output(dictionary, DATABASE_NAME):
