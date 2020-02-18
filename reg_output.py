@@ -12,7 +12,7 @@ from sqlite3 import connect
 #-------------------------------------------------------------
 
 def IDcheck_conditionals(dictionary):
-	c0, c1 = 0
+	c0, c1 = 0, 0
 	if ('-dept' in dictionary or '-coursenum' in dictionary):
 		c0 = 1
 	if ('-area' in dictionary or '-title' in dictionary):
@@ -25,11 +25,11 @@ def add_IDchecks(dictionary, stmtStr):
 	c0, c1 = IDcheck_conditionals(dictionary)
 
 	if (c0 == 1 and c1 == 1):
-		stmtStr ' WHERE classes.courseid = crosslistings.courseid AND ' + \
+		stmtStr += ' WHERE classes.courseid = crosslistings.courseid AND ' + \
 				'classes.courseid = courses.courseid '
-	elif (c0 = 1):
+	elif (c0 == 1):
 		stmtStr += ' WHERE classes.courseid = crosslistings.courseid'
-	elif (c1 = 1):
+	elif (c1 == 1):
 		stmtStr += ' WHERE classes.courseid = courses.courseid'
 	return stmtStr
 
@@ -78,10 +78,12 @@ def execute_output(dictionary, DATABASE_NAME):
 	connection = connect(DATABASE_NAME)
 	cursor = connection.cursor()
 
-	cursor.execute(produce_output(dictionary))
+	instruction = produce_output(dictionary)
+	print(instruction)
+	cursor.execute(instruction)
 	print_output(cursor)
 
-	corsor.close()
+	cursor.close()
 	connection.close()
 
 
