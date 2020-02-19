@@ -15,10 +15,8 @@ def report_err(msg):
 
 #--------------------------------------------------------------------------------
 
-def check_h(args, argv):
-	if (len(argv) > 1 and argv[1] == '-h'): 
-		args['-h'] = 'True'
-		return 2
+def check_h(argv):
+	if (len(argv) > 1 and argv[1] == '-h'): return 2
 	return 1
 
 #--------------------------------------------------------------------------------
@@ -38,12 +36,13 @@ def check_value(argv, i):
 
 def check_input():
 	args = {}
-	start = check_h(args, argv)
+	start = check_h(argv)
 	for i in range(start, len(argv), 2):
 		check_key(args, argv[i])
 		check_value(argv, i+1)
 		args[argv[i]] = argv[i+1]
-	return args
+	h = (start == 2)
+	return args, h
 
 
 
