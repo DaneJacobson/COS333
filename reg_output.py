@@ -27,6 +27,7 @@ def make_connection(database):
 	if not path.isfile(database):
 		report_err("reg: database reg.sqlite not found")
 	connection = connect(database)
+	# connection.text_factory = str
 	cursor = connection.cursor()
 	return connection, cursor
 
@@ -84,7 +85,7 @@ def print_h(cursor):
 def print_normal(cursor):
 	row = cursor.fetchone()
 	while row is not None:
-		print(str(row[0]) + '\t' + str(row[1]) + '\t' + str(row[2]) + '\t' + str(row[3]) + '\t' + str(row[4]) + '\t')
+		print(str(row[0]) + '\t' + str(row[1]) + '\t' + str(row[2]) + '\t' + str(row[3]) + '\t' + str(row[4]))
 		row = cursor.fetchone()
 
 #--------------------------------------------------------------------------------
