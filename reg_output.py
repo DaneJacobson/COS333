@@ -18,7 +18,7 @@ BEGINNING = 'SELECT classid, dept, coursenum, area, title FROM classes, courses,
 DEPT = " AND crosslistings.dept LIKE ?"
 CRS_NUM = " AND crosslistings.coursenum LIKE ?"
 AREA = " AND courses.area LIKE ?"
-TITLE = " AND courses.title LIKE ?"
+TITLE = " AND courses.title LIKE ? ESCAPE '\\'"
 ORDER = ' ORDER BY dept, coursenum, classid ASC;'
 
 #--------------------------------------------------------------------------------
@@ -36,6 +36,9 @@ def produce_output(dictionary):
 	stmtStr = BEGINNING
 	vals = []
 	for key,value in dictionary.items():
+		value = value.replace('%', '\\%')
+		value = value.replace('_', '\\_')
+		value = value.lower()
 		vals.append('%' + value + '%')
 		if (key == '-dept'): stmtStr += DEPT
 		elif (key == '-coursenum'): stmtStr += CRS_NUM
@@ -48,13 +51,13 @@ def produce_output(dictionary):
 
 def get_title(title):
 	CHARS_PER_LINE = 72 - 23
-	
+
 	result, outline = '', ''
 	re_word = compile(r'\S+')
 	words = re_word.findall(title)
 	for word in words:
 		if len(outline) + len(word) > CHARS_PER_LINE:
-			result += outline.rstrip() + '\n                       '
+			result += outline.rstrip() + '\n                       ' # this is necessary
 			outline = ''
 		outline += word + ' '
 	if outline:
