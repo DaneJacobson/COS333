@@ -67,12 +67,12 @@ def class_loc(cursor, classid, h):
 	row = call_db(cursor, CLASS_LOC, classid)
 	s0, s1, s2, s3, s4, s5 = str(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5])
 	if h: 
-		s0 = norm('Course Id: %s' % s0) + '\n'
-		s1 = norm('Days: %s' % s1)
-		s2 = norm('Start time: %s' % s2)
-		s3 = norm('End time: %s' % s3)
-		s4 = norm('Building: %s' % s4)
-		s5 = norm('Room: %s' % s5) + '\n'
+		s0 = 'Course Id: ' + s0 + '\n'
+		s1 = 'Days: ' + s1
+		s2 = 'Start time: ' + s2
+		s3 = 'End time: ' + s3
+		s4 = 'Building: ' + s4
+		s5 = 'Room: ' + s5 + '\n'
 	print_lines([s0, s1, s2, s3, s4, s5])
 
 #--------------------------------------------------------------------------------
@@ -91,10 +91,10 @@ def crs_reqs(cursor, classid, h):
 	row = call_db(cursor, CRS_REQS, classid)
 	s0, s1, s2, s3 = str(row[0]), str(row[1]), str(row[2]), str(row[3])
 	if h:
-		s0 = norm('Area: %s' % s0) + '\n'
-		s1 = norm('Title: %s' % s1) + '\n'
-		s2 = norm('Description: %s' % s2) + '\n'
-		s3 = norm('Prerequisites: %s' % s3) + '\n'
+		s0 = 'Area: ' + s0 + '\n'
+		s1 = norm('Title: ' + s1) + '\n'
+		s2 = norm('Description: ' + s2) + '\n'
+		s3 = norm('Prerequisites: ' + s3) + '\n'
 	print_lines([s0, s1, s2, s3])
 
 #--------------------------------------------------------------------------------
