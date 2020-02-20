@@ -1,0 +1,9 @@
+cd /u/cos333/Asgt1Solution
+
+./regdetails 9032 > /u/dbasili/r1
+./regdetails 8321 > /u/dbasili/r2
+
+cd /u/dbasili
+
+./regdetails 9032 > /u/dbasili/rr1
+./regdetails 8321 > /u/dbasili/rr2

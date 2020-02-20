@@ -9,7 +9,7 @@ from os import path
 from sys import argv, stderr, exit
 from sqlite3 import connect
 from re import compile
-from check_input import report_err
+from reg_check import report_err
 
 #-------------------------------------------------------------
 
@@ -25,7 +25,7 @@ ORDER = ' ORDER BY dept, coursenum, classid ASC;'
 
 def make_connection(database):
 	if not path.isfile(database):
-		report_err("reg: database reg.sqlite not found")
+		report_err("database reg.sqlite not found")
 	connection = connect(database)
 	# connection.text_factory = str
 	cursor = connection.cursor()
@@ -58,7 +58,7 @@ def get_title(title):
 	words = re_word.findall(title)
 	for word in words:
 		if len(outline) + len(word) > CHARS_PER_LINE:
-			result += outline.rstrip() + '\n                       ' # this is necessary
+			result += outline.rstrip() + '\n                       '
 			outline = ''
 		outline += word + ' '
 	if outline:
@@ -117,4 +117,4 @@ def execute_output(dictionary, h, database):
 	close(cursor, connection)
 
 
-	
+

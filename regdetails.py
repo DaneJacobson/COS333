@@ -5,13 +5,12 @@
 # Authors: David Basili, Dane Jacobson
 #--------------------------------------------------------------------------------
 
-from reg_check import check_input
-from reg_output import execute_output
+from regdetails_check import check_input
+from regdetails_output import execute_output
 
 def main():
-
-	inputs, h = check_input()
-	execute_output(inputs, h, 'reg.sqlite')
+	classid, h = check_input()
+	execute_output(classid, h, 'reg.sqlite')
 
 
 #--------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ from sys import argv, stderr, exit
 #--------------------------------------------------------------------------------
 
 def report_err(msg):
-	print(msg, file=stderr)
+	print('reg: ' + msg, file=stderr)
 	exit(1)
 
 #--------------------------------------------------------------------------------
@@ -23,14 +23,14 @@ def check_h(argv):
 
 def check_key(args, k):
 	VALID_KEYS = ['-dept', '-coursenum', '-area', '-title']
-	if k in args: report_err('reg: duplicate key')
-	if not k in VALID_KEYS: report_err('reg: invalid key')
+	if k in args: report_err('duplicate key')
+	if not k in VALID_KEYS: report_err('invalid key')
 
 #--------------------------------------------------------------------------------
 
 def check_value(argv, i):
-	if (i >= len(argv)): report_err('reg: missing value')
-	if (argv[i][0] == '-'): report_err('reg: missing value')
+	if (i >= len(argv)): report_err('missing value')
+	if (argv[i][0] == '-'): report_err('missing value')
 
 #--------------------------------------------------------------------------------
 
