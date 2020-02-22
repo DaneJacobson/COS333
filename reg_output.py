@@ -27,7 +27,6 @@ def make_connection(database):
 	if not path.isfile(database):
 		report_err("database reg.sqlite not found")
 	connection = connect(database)
-	# connection.text_factory = str
 	cursor = connection.cursor()
 	return connection, cursor
 

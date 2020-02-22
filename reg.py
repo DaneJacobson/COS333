@@ -13,7 +13,6 @@ def main():
 	inputs, h = check_input()
 	execute_output(inputs, h, 'reg.sqlite')
 
-
 #--------------------------------------------------------------------------------
 
 if __name__ == '__main__':
