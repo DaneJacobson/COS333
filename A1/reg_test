@@ -1,0 +1,129 @@
+cd /u/cos333/Asgt1Solution
+
+./reg > /u/dbasili/r1
+./reg -dept COS > /u/dbasili/r2
+./reg -coursenum 333 > /u/dbasili/r3
+./reg -coursenum b > /u/dbasili/r4
+./reg -area Qr > /u/dbasili/r5
+./reg -title intro > /u/dbasili/r6
+./reg -title science > /u/dbasili/r7
+./reg -title C_S > /u/dbasili/r8
+./reg -title c%S > /u/dbasili/r9
+./reg -dept cos -coursenum 3 > /u/dbasili/r10
+./reg -dept cos -area qr -coursenum 2 -title intro > /u/dbasili/r11
+./reg -title "Independent Study" > /u/dbasili/r12
+./reg -title "Independent Study " > /u/dbasili/r13
+./reg -title "Independent Study  " > /u/dbasili/r14
+./reg -title " Independent Study" > /u/dbasili/r15
+./reg -title "  Independent Study" > /u/dbasili/r16
+
+./reg -area qr st 2> /u/dbasili/r17
+./reg area qr 2> /u/dbasili/r18
+./reg -Area qr 2> /u/dbasili/r19
+./reg "-area " qr 2> /u/dbasili/r20
+./reg -h -area qr -h 2> /u/dbasili/r21
+./reg -dept cos -coursenum 333 -dept cos 2> /u/dbasili/r22
+./reg -area 2> /u/dbasili/r23
+./reg -h -area qr -dept 2> /u/dbasili/r24
+
+cd /u/dbasili
+
+./reg > /u/dbasili/rr1
+./reg -dept COS > /u/dbasili/rr2
+./reg -coursenum 333 > /u/dbasili/rr3
+./reg -coursenum b > /u/dbasili/rr4
+./reg -area Qr > /u/dbasili/rr5
+./reg -title intro > /u/dbasili/rr6
+./reg -title science > /u/dbasili/rr7
+./reg -title C_S > /u/dbasili/rr8
+./reg -title c%S > /u/dbasili/rr9
+./reg -dept cos -coursenum 3 > /u/dbasili/rr10
+./reg -dept cos -area qr -coursenum 2 -title intro > /u/dbasili/rr11
+./reg -title "Independent Study" > /u/dbasili/rr12
+./reg -title "Independent Study " > /u/dbasili/rr13
+./reg -title "Independent Study  " > /u/dbasili/rr14
+./reg -title " Independent Study" > /u/dbasili/rr15
+./reg -title "  Independent Study" > /u/dbasili/rr16
+
+./reg -area qr st 2> /u/dbasili/rr17
+./reg area qr 2> /u/dbasili/rr18
+./reg -Area qr 2> /u/dbasili/rr19
+./reg "-area " qr 2> /u/dbasili/rr20
+./reg -h -area qr -h 2> /u/dbasili/rr21
+./reg -dept cos -coursenum 333 -dept cos 2> /u/dbasili/rr22
+./reg -area 2> /u/dbasili/rr23
+./reg -h -area qr -dept 2> /u/dbasili/rr24
+
+echo diff 1
+diff r1 rr1
+
+echo diff 2
+diff r2 rr2
+
+echo diff 3
+diff r3 rr3
+
+echo diff 4
+diff r4 rr4
+
+echo diff 5
+diff r5 rr5
+
+echo diff 6
+diff r6 rr6
+
+echo diff 7
+diff r7 rr7
+
+echo diff 8
+diff r8 rr8
+
+echo diff 9
+diff r9 rr9
+
+echo diff 10
+diff r10 rr10
+
+echo diff 11
+diff r11 rr11
+
+echo diff 12
+diff r12 rr12
+
+echo diff 13
+diff r13 rr13
+
+echo diff 14
+diff r14 rr14
+
+echo diff 15
+diff r15 rr15
+
+echo diff 16
+diff r16 rr16
+
+echo diff 17
+diff r17 rr17
+
+echo diff 18
+diff r18 rr18
+
+echo diff 19
+diff r19 rr19
+
+echo diff 20
+diff r20 rr20
+
+echo diff 21
+diff r21 rr21
+
+echo diff 22
+diff r22 rr22
+
+echo diff 23
+diff r23 rr23
+
+echo diff 24
+diff r24 rr24
+
+rm r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r20 r21 r22 r23 r24 rr1 rr2 rr3 rr4 rr5 rr6 rr7 rr8 rr9 rr10 rr11 rr12 rr13 rr14 rr15 rr16 rr17 rr18 rr19 rr20 rr21 rr22 rr23 rr24

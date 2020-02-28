@@ -1,0 +1,72 @@
+cd /u/cos333/Asgt1Solution
+
+./regdetails 9032 > /u/dbasili/r1
+./regdetails 8321 > /u/dbasili/r2
+./regdetails -h 9032 > /u/dbasili/r3
+./regdetails -h 8321 > /u/dbasili/r4
+
+./regdetails 99999 2> /u/dbasili/r5
+./regdetails 2> /u/dbasili/r6
+./regdetails 8321 9032 2> /u/dbasili/r7
+./regdetails abc 2> /u/dbasili/r8
+./regdetails -h -h 8321 2> /u/dbasili/r9
+
+./regdetails -h 8093 > /u/dbasili/r10
+./regdetails 8093 > /u/dbasili/r11
+./regdetails 10182 > /u/dbasili/r12
+
+cd /u/dbasili
+
+./regdetails 9032 > /u/dbasili/rr1
+./regdetails 8321 > /u/dbasili/rr2
+./regdetails -h 9032 > /u/dbasili/rr3
+./regdetails -h 8321 > /u/dbasili/rr4
+
+./regdetails 99999 2> /u/dbasili/rr5
+./regdetails 2> /u/dbasili/rr6
+./regdetails 8321 9032 2> /u/dbasili/rr7
+./regdetails abc 2> /u/dbasili/rr8
+./regdetails -h -h 8321 2> /u/dbasili/rr9
+
+./regdetails -h 8093 > /u/dbasili/rr10
+./regdetails 8093 > /u/dbasili/rr11
+./regdetails 10182 > /u/dbasili/rr12
+
+
+echo diff 1
+diff r1 rr1
+
+echo diff 2
+diff r2 rr2
+
+echo diff 3
+diff r3 rr3
+
+echo diff 4
+diff r4 rr4
+
+echo diff 5
+diff r5 rr5
+
+echo diff 6
+diff r6 rr6
+
+echo diff 7
+diff r7 rr7
+
+echo diff 8
+diff r8 rr8
+
+echo diff 9
+diff r9 rr9
+
+echo diff 10
+diff r10 rr10
+
+echo diff 11
+diff r11 rr11
+
+echo diff 12
+diff r12 rr12
+
+rm r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 rr1 rr2 rr3 rr4 rr5 rr6 rr7 rr8 rr9 rr10 rr11 rr12
