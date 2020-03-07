@@ -24,8 +24,21 @@ def execute_client(host, port, specs):
 		data = load(inFlo)
 		sock.close()
 
+		if "error" in data: return False, data["error"]
 		return True, data
 
 	except Exception as e:
-		success = False
 		return False, str(e)
+
+
+#--------------------------------------------------------------------------------
+
+def get_class_list(host, port, specs):
+	specs["type"] = 'list'
+	execute_client(host, port, specs)
+
+#--------------------------------------------------------------------------------
+
+def get_class_details(host, port, specs):
+	specs["type"] = 'details'
+	execute_client(host, port, specs)

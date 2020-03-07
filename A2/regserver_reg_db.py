@@ -83,10 +83,12 @@ def close(cursor, connection):
 
 #--------------------------------------------------------------------------------
 
-def access_db(dictionary):
+def access_reg_db(dictionary):
 	DATABASE = 'reg.sqlite'
 	error, connection, cursor = make_connection(DATABASE)
-	if error: return {'error': 'database reg.sqlite not found'}
+	if error: 
+		print('regserver: database %s not found' % DATABASE, file=stderr)
+		return {'error': 'database %s not found' % DATABASE}
 
 	try:
 		instruction, vals = produce_output(dictionary)
