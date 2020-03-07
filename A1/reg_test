@@ -1,6 +1,6 @@
 cd /u/cos333/Asgt1Solution
 
-./reg > /u/dbasili/r1
+./reg -h > /u/dbasili/r1
 ./reg -dept COS > /u/dbasili/r2
 ./reg -coursenum 333 > /u/dbasili/r3
 ./reg -coursenum b > /u/dbasili/r4
@@ -28,7 +28,7 @@ cd /u/cos333/Asgt1Solution
 
 cd /u/dbasili
 
-./reg > /u/dbasili/rr1
+./reg -h > /u/dbasili/rr1
 ./reg -dept COS > /u/dbasili/rr2
 ./reg -coursenum 333 > /u/dbasili/rr3
 ./reg -coursenum b > /u/dbasili/rr4

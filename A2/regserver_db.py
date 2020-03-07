@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #-------------------------------------------------------------
-# reg_output.py
+# regserver_db.py
 # Author: Dane Jacobson and David Basili
 #-------------------------------------------------------------
 
@@ -9,7 +9,6 @@ from os import path
 from sys import argv, stderr, exit
 from sqlite3 import connect
 from re import compile
-from reg_check import report_err
 
 #-------------------------------------------------------------
 
@@ -25,10 +24,10 @@ ORDER = ' ORDER BY dept, coursenum, classid ASC;'
 
 def make_connection(database):
 	if not path.isfile(database):
-		report_err("database reg.sqlite not found")
+		return True, None, None
 	connection = connect(database)
 	cursor = connection.cursor()
-	return connection, cursor
+	return False, connection, cursor
 
 #--------------------------------------------------------------------------------
 
@@ -66,30 +65,15 @@ def get_title(title):
 
 #--------------------------------------------------------------------------------
 
-def print_h(cursor):
-	print("ClsId Dept CrsNum Area Title")
-	print("----- ---- ------ ---- -----")
-
+def get_output(cursor):
+	entries = {}
 	row = cursor.fetchone()
 	while row is not None:
 		classid, dept, crsnm, area = row[0], row[1], row[2], row[3]
 		title = get_title(row[4])
-		print('{:>5}{:>5}{:>7}{:>5} {}'.format(classid, dept, crsnm, area, title))
+		entries[classid] = '{:>5}{:>5}{:>7}{:>5} {}'.format(classid, dept, crsnm, area, title)
 		row = cursor.fetchone()
-
-#--------------------------------------------------------------------------------
-
-def print_normal(cursor):
-	row = cursor.fetchone()
-	while row is not None:
-		print(str(row[0]) + '\t' + str(row[1]) + '\t' + str(row[2]) + '\t' + str(row[3]) + '\t' + str(row[4]))
-		row = cursor.fetchone()
-
-#--------------------------------------------------------------------------------
-
-def print_output(h, cursor):
-	if h: print_h(cursor)
-	else: print_normal(cursor)
+	return entries
 
 #--------------------------------------------------------------------------------
 
@@ -99,19 +83,21 @@ def close(cursor, connection):
 
 #--------------------------------------------------------------------------------
 
-def execute_output(dictionary, h, database):
-	connection, cursor = make_connection(database)
+def access_db(dictionary):
+	DATABASE = 'reg.sqlite'
+	error, connection, cursor = make_connection(DATABASE)
+	if error: return {'error': 'database reg.sqlite not found'}
 
 	try:
 		instruction, vals = produce_output(dictionary)
 		cursor.execute(instruction, vals)
-		print_output(h, cursor)
+		entries = get_output(cursor)
 	except Exception as e:
-		print('reg: ' + str(e), file=stderr)
-		close(cursor, connection)
-		exit(1)
+		print('regserver: ' + str(e), file=stderr)
+		entries = {'error': str(e)}
 
 	close(cursor, connection)
+	return entries
 
 
 
