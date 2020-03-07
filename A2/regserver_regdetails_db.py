@@ -63,44 +63,42 @@ def print_lines(lines):
 
 #--------------------------------------------------------------------------------
 
-def class_loc(cursor, classid, h):
+def class_loc(cursor, classid):
 	row = call_db(cursor, CLASS_LOC, classid)
 	s0, s1, s2, s3, s4, s5 = str(row[0]), str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5])
-	if h: 
-		s0 = 'Course Id: ' + s0 + '\n'
-		s1 = 'Days: ' + s1
-		s2 = 'Start time: ' + s2
-		s3 = 'End time: ' + s3
-		s4 = 'Building: ' + s4
-		s5 = 'Room: ' + s5 + '\n'
+	s0 = 'Course Id: ' + s0 + '\n'
+	s1 = 'Days: ' + s1
+	s2 = 'Start time: ' + s2
+	s3 = 'End time: ' + s3
+	s4 = 'Building: ' + s4
+	s5 = 'Room: ' + s5 + '\n'
 	print_lines([s0, s1, s2, s3, s4, s5])
 
 #--------------------------------------------------------------------------------
 
-def dept(cursor, classid, h):
-	msg = '{} {}' if not h else 'Dept and Number: {} {}'
+def dept(cursor, classid):
+	msg = 'Dept and Number: {} {}'
 	row = call_db(cursor, DEPT, classid)
 	while row is not None:
 		print(msg.format(str(row[0]), str(row[1])))
 		row = cursor.fetchone()
-	if h: print()
+	print()
 
 #--------------------------------------------------------------------------------
 
-def crs_reqs(cursor, classid, h):
+def crs_reqs(cursor, classid):
 	row = call_db(cursor, CRS_REQS, classid)
 	s0, s1, s2, s3 = str(row[0]), str(row[1]), str(row[2]), str(row[3])
-	if h:
-		s0 = 'Area: ' + s0 + '\n'
-		s1 = norm('Title: ' + s1) + '\n'
-		s2 = norm('Description: ' + s2) + '\n'
-		s3 = norm('Prerequisites: ' + s3) + '\n'
+	s0 = 'Area: ' + s0 + '\n'
+	s1 = norm('Title: ' + s1) + '\n'
+	s2 = norm('Description: ' + s2) + '\n'
+	s3 = norm('Prerequisites: ' + s3) + '\n'
 	print_lines([s0, s1, s2, s3])
 
 #--------------------------------------------------------------------------------
 
-def prof(cursor, classid, h):
-	msg = '{}' if not h else 'Professor: {}'
+def prof(cursor, classid):
+	msg = 'Professor: {}'
 	row = call_db(cursor, PROF, classid)
 	while row is not None:
 		print(msg.format(str(row[0])))
@@ -114,13 +112,14 @@ def close(cursor, connection):
 
 #--------------------------------------------------------------------------------
 
-def execute_output(classid, h, database):
-	connection, cursor = make_connection(database)
+def access_regdetails_db(classid, database):
+	DATABASE = 'reg.sqlite'
+	connection, cursor = make_connection(DATABASE)
 	try:
-		class_loc(cursor, classid, h)
-		dept(cursor, classid, h)
-		crs_reqs(cursor, classid, h)
-		prof(cursor, classid, h)
+		str = class_loc(cursor, classid)
+		str += dept(cursor, classid)
+		str += crs_reqs(cursor, classid)
+		str += prof(cursor, classid)
 	except Exception as e:
 		print('regdetails: ' + str(e), file=stderr)
 		close(cursor, connection)

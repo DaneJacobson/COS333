@@ -6,8 +6,8 @@
 #--------------------------------------------------------------------------------
 
 from sys import stderr
-from regserver_db import access_reg_db
-from regdetailsserver_db import access_details_db
+from regserver_reg_db import access_reg_db
+from regserver_regdetails_db import access_details_db
 from socket import socket
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from pickle import load, dump
@@ -20,10 +20,8 @@ def handleClient(sock, clientAddr):
 	print('Read from client ' + str(clientAddr))
 
 	info_type = specs.pop("type", "list")
-	if info_type == 'list':
-		info = access_reg_db(specs)
-	else:
-		info = access_regdetails_db(specs)
+	if info_type == 'list': info = access_reg_db(specs)
+	else: info = access_regdetails_db(specs)
 
 	outFlo = sock.makefile(mode='wb')
 	dump(info, outFlo)
