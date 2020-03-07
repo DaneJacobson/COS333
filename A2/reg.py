@@ -7,6 +7,7 @@
 
 from reg_check import check_input
 from reg_client import execute_client
+from reg_gui import initialize_gui
 
 def main():
 
@@ -18,6 +19,7 @@ def main():
 	if success:
 		for key, val in data.items():
 			print(val)
+		initialize_gui(data)
 	else:
 		print('reg: ' + data)
 
