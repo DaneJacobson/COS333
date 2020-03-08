@@ -9,8 +9,6 @@ from os import path
 from sys import argv, stderr, exit
 from sqlite3 import connect
 from re import compile
-from regdetails_check import report_err
-
 #-------------------------------------------------------------
 
 CLASS_LOC = 'SELECT courseid, days, starttime, endtime, bldg, roomnum FROM classes WHERE classid = ?;'
@@ -25,10 +23,10 @@ PROF = 'SELECT profname FROM classes, coursesprofs, profs WHERE classes.courseid
 
 def make_connection(database):
 	if not path.isfile(database):
-		report_err("database reg.sqlite not found")
+		return True, None, None
 	connection = connect(database)
 	cursor = connection.cursor()
-	return connection, cursor
+	return False, connection, cursor
 
 #--------------------------------------------------------------------------------
 
@@ -52,14 +50,8 @@ def norm(line):
 def call_db(cursor, instruction, classid):
 	cursor.execute(instruction, [classid])
 	row = cursor.fetchone()
-	if row is None and instruction == CLASS_LOC: report_err('classid does not exist')
+	if row is None and instruction == CLASS_LOC: print('regserver: classid does not exist', file=stderr)
 	return row
-
-#--------------------------------------------------------------------------------
-
-def print_lines(lines):
-	for line in lines:
-		print(line)
 
 #--------------------------------------------------------------------------------
 
@@ -72,17 +64,18 @@ def class_loc(cursor, classid):
 	s3 = 'End time: ' + s3
 	s4 = 'Building: ' + s4
 	s5 = 'Room: ' + s5 + '\n'
-	print_lines([s0, s1, s2, s3, s4, s5])
+	return '{}\n{}\n{}\n{}\n{}\n{}\n'.format(s0, s1, s2, s3, s4, s5)
 
 #--------------------------------------------------------------------------------
 
 def dept(cursor, classid):
 	msg = 'Dept and Number: {} {}'
 	row = call_db(cursor, DEPT, classid)
+	result = ''
 	while row is not None:
-		print(msg.format(str(row[0]), str(row[1])))
+		result += msg.format(str(row[0]), str(row[1])) + '\n'
 		row = cursor.fetchone()
-	print()
+	return result + '\n'
 
 #--------------------------------------------------------------------------------
 
@@ -93,16 +86,18 @@ def crs_reqs(cursor, classid):
 	s1 = norm('Title: ' + s1) + '\n'
 	s2 = norm('Description: ' + s2) + '\n'
 	s3 = norm('Prerequisites: ' + s3) + '\n'
-	print_lines([s0, s1, s2, s3])
+	return '{}\n{}\n{}\n{}\n'.format(s0, s1, s2, s3)
 
 #--------------------------------------------------------------------------------
 
 def prof(cursor, classid):
 	msg = 'Professor: {}'
 	row = call_db(cursor, PROF, classid)
+	result = ''
 	while row is not None:
-		print(msg.format(str(row[0])))
+		result += msg.format(str(row[0])) + '\n'
 		row = cursor.fetchone()
+	return result
 
 #--------------------------------------------------------------------------------
 
@@ -114,17 +109,25 @@ def close(cursor, connection):
 
 def access_regdetails_db(classid, database):
 	DATABASE = 'reg.sqlite'
-	connection, cursor = make_connection(DATABASE)
+	error, connection, cursor = make_connection(DATABASE)
+	if error: 
+		print('regserver: database %s not found' % DATABASE, file=stderr)
+		return {'error': 'regserver: database %s not found' % DATABASE}
+
 	try:
 		str = class_loc(cursor, classid)
 		str += dept(cursor, classid)
 		str += crs_reqs(cursor, classid)
 		str += prof(cursor, classid)
 	except Exception as e:
-		print('regdetails: ' + str(e), file=stderr)
+		print('regserver: ' + str(e), file=stderr)
 		close(cursor, connection)
-		exit(1)
+		return {'error': 'regserver: ' + str(e)}
+
 	close(cursor, connection)
+	return {'success': str}
+
+
 
 
 	

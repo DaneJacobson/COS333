@@ -33,12 +33,14 @@ def execute_client(host, port, specs):
 
 #--------------------------------------------------------------------------------
 
+# returns {'error': errormsg} or {...}
 def get_class_list(host, port, specs):
 	specs["type"] = 'list'
 	return execute_client(host, port, specs)
 
 #--------------------------------------------------------------------------------
 
+# returns {'error': errormsg} or {'success': detailsstr}
 def get_class_details(host, port, specs):
 	specs["type"] = 'details'
 	return execute_client(host, port, specs)
