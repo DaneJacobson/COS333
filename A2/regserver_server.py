@@ -7,7 +7,7 @@
 
 from sys import stderr
 from regserver_reg_db import access_reg_db
-from regserver_regdetails_db import access_details_db
+from regserver_regdetails_db import access_regdetails_db
 from socket import socket
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from pickle import load, dump

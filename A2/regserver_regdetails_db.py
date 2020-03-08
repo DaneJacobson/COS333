@@ -107,25 +107,26 @@ def close(cursor, connection):
 
 #--------------------------------------------------------------------------------
 
-def access_regdetails_db(classid, database):
+def access_regdetails_db(dictionary):
 	DATABASE = 'reg.sqlite'
 	error, connection, cursor = make_connection(DATABASE)
 	if error: 
 		print('regserver: database %s not found' % DATABASE, file=stderr)
 		return {'error': 'regserver: database %s not found' % DATABASE}
+	classid = dictionary['classid']
 
 	try:
-		str = class_loc(cursor, classid)
-		str += dept(cursor, classid)
-		str += crs_reqs(cursor, classid)
-		str += prof(cursor, classid)
+		string = class_loc(cursor, classid)
+		string += dept(cursor, classid)
+		string += crs_reqs(cursor, classid)
+		string += prof(cursor, classid)
 	except Exception as e:
 		print('regserver: ' + str(e), file=stderr)
 		close(cursor, connection)
 		return {'error': 'regserver: ' + str(e)}
 
 	close(cursor, connection)
-	return {'success': str}
+	return {'success': string}
 
 
 

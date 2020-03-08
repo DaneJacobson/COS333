@@ -40,7 +40,9 @@ def get_class_list(host, port, specs):
 
 #--------------------------------------------------------------------------------
 
-# returns {'error': errormsg} or {'success': detailsstr}
-def get_class_details(host, port, specs):
-	specs["type"] = 'details'
-	return execute_client(host, port, specs)
+# returns errormsg or detailsstr
+def get_class_details(host, port, classid):
+	specs = {'classid': classid, 'type': 'details'}
+	success, msg = execute_client(host, port, specs)
+	if success: return True, msg['success']
+	else: return False, msg
