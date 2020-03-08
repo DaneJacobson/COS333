@@ -23,7 +23,8 @@ def main():
 	else:
 		print('error:', data)
 
-	success, data = get_class_details(host, port, 8717)
+	classid = 8717
+	success, data = get_class_details(host, port, classid)
 	print(data)
 
 #--------------------------------------------------------------------------------
