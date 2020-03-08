@@ -27,22 +27,19 @@ def execute_client(host, port, specs):
 	except Exception as e:
 		return False, str(e)
 
-	return ("error" not in data), data
+	if 'error' in data: return False, data['error']
+	else: return True, data['success']
 
 #--------------------------------------------------------------------------------
 
 # returns success, errormsg or success, {...}
 def get_class_list(host, port, specs):
 	specs["type"] = 'list'
-	success, msg = execute_client(host, port, specs)
-	if success: return True, msg
-	else: return False, msg['error']
+	return execute_client(host, port, specs)
 
 #--------------------------------------------------------------------------------
 
 # returns success, errormsg or success, detailsstr
 def get_class_details(host, port, classid):
 	specs = {'classid': classid, 'type': 'details'}
-	success, msg = execute_client(host, port, specs)
-	if success: return True, msg['success']
-	else: return False, msg['error']
+	return execute_client(host, port, specs)

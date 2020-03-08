@@ -49,10 +49,10 @@ def produce_output(dictionary):
 #--------------------------------------------------------------------------------
 
 def get_output(cursor):
-	entries = {}
+	entries = []
 	row = cursor.fetchone()
 	while row is not None:
-		entries[row[0]] = '{:>5}{:>5}{:>7}{:>5} {}'.format(row[0], row[1], row[2], row[3], row[4])
+		entries.append('{:>5}{:>5}{:>7}{:>5} {}'.format(row[0], row[1], row[2], row[3], row[4]))
 		row = cursor.fetchone()
 	return entries
 
@@ -74,7 +74,7 @@ def access_reg_db(dictionary):
 	try:
 		instruction, vals = produce_output(dictionary)
 		cursor.execute(instruction, vals)
-		entries = get_output(cursor)
+		entries = {'success': get_output(cursor)}
 	except Exception as e:
 		print('regserver: ' + str(e), file=stderr)
 		entries = {'error': 'regserver: ' + str(e)}

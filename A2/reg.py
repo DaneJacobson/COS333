@@ -17,7 +17,7 @@ def main():
 
 	success, data = get_class_list(host, port, specs)
 	if success:
-		for key, val in data.items():
+		for val in data:
 			print(val)
 		initialize_gui(host, port, data)
 	else:
