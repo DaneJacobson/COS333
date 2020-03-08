@@ -91,17 +91,27 @@ def window_gui(centralFrame):
 	
 	return window
 
+def update_dialogue(data):
+	dialogue = QListWidget()
+	i = 0
+	for courseinfo in data.values():
+		dialogue.insertItem(i, courseinfo)
+		i += 1
+	dialogue.clicked.connect(course_clicked(dialogue))
+
+	return dialogue
+
+def course_clicked(dialogue):
+	item = dialogue.currentItem()
+	print(item.text())
+
 def initialize_gui(host, port, data):
 	app = QApplication([])
 
 	widgets = design_gui()
 	inputFrame = inputFrameLayout(widgets)
 
-	dialogue = QListWidget()
-	i = 0
-	for courseinfo in data.values():
-		dialogue.insertItem(i, courseinfo)
-		i += 1
+	dialogue = update_dialogue(data)
 
 	dialogueFrame = dialogueFrameLayout(data, dialogue)
 
@@ -121,12 +131,7 @@ def initialize_gui(host, port, data):
 
 		success, data = get_class_list(host, port, request)	
 		if success:
-			dialogue.clear()
-			i = 0
-			for courseinfo in data.values():
-				dialogue.insertItem(i, str(courseinfo))
-				print(str(courseinfo))
-				i += 1
+			dialogue = update_dialogue(data)
 			dialogue.repaint()
 
 	widgets[0].clicked.connect(submitButtonSlot)
