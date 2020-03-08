@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QApplication, QFrame, QLabel
 from PyQt5.QtWidgets import QMainWindow, QGridLayout, QDesktopWidget
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QListWidget
 from PyQt5.QtCore import Qt
+from reg_client import get_class_list, get_class_details
 
 def design_gui():
 	widgets = [None] * 9
@@ -40,30 +41,21 @@ def inputFrameLayout(widgets):
 	inputFrameLayout.setColumnStretch(0,0)
 	inputFrameLayout.setColumnStretch(1,1)
 	inputFrameLayout.setColumnStretch(2,0)
-	inputFrameLayout.addWidget(widgets[0],1,2)
-	inputFrameLayout.addWidget(widgets[1],0,0)
-	inputFrameLayout.addWidget(widgets[2],1,0)
-	inputFrameLayout.addWidget(widgets[3],2,0)
-	inputFrameLayout.addWidget(widgets[4],3,0)
-	inputFrameLayout.addWidget(widgets[5],0,1)
-	inputFrameLayout.addWidget(widgets[6],1,1)
-	inputFrameLayout.addWidget(widgets[7],2,1)
-	inputFrameLayout.addWidget(widgets[8],3,1)
+	inputFrameLayout.addWidget(widgets[0],1,2) # submit
+	inputFrameLayout.addWidget(widgets[1],0,0) # dept label
+	inputFrameLayout.addWidget(widgets[2],1,0) # number label
+	inputFrameLayout.addWidget(widgets[3],2,0) # area label
+	inputFrameLayout.addWidget(widgets[4],3,0) # title label
+	inputFrameLayout.addWidget(widgets[5],0,1) # dept field
+	inputFrameLayout.addWidget(widgets[6],1,1) # number field
+	inputFrameLayout.addWidget(widgets[7],2,1) # area field
+	inputFrameLayout.addWidget(widgets[8],3,1) # title field
 	inputFrame = QFrame()
 	inputFrame.setLayout(inputFrameLayout)
+	
 	return inputFrame
 
-def dialogueFrameLayout():
-
-	success, data = execute_client
-
-
-	dialogue = QListWidget()
-	dialogue.insertItem(0, 'sup')
-	dialogue.insertItem(1, 'David')
-	dialogue.insertItem(2, 'you')
-	dialogue.insertItem(3, 'suck')
-	dialogue.insertItem(4, 'a lot')
+def dialogueFrameLayout(data, dialogue):
 
 	dialogueFrameLayout = QGridLayout()
 	dialogueFrameLayout.setSpacing(0)
@@ -73,6 +65,7 @@ def dialogueFrameLayout():
 	dialogueFrameLayout.addWidget(dialogue,0,0)
 	dialogueFrame = QFrame()
 	dialogueFrame.setLayout(dialogueFrameLayout)
+	
 	return dialogueFrame
 
 def centralFrameLayout(inputFrame, dialogueFrame):
@@ -86,6 +79,7 @@ def centralFrameLayout(inputFrame, dialogueFrame):
 	centralFrameLayout.addWidget(dialogueFrame,1,0)
 	centralFrame = QFrame()
 	centralFrame.setLayout(centralFrameLayout)
+	
 	return centralFrame
 
 def window_gui(centralFrame):
@@ -94,22 +88,48 @@ def window_gui(centralFrame):
 	window.setCentralWidget(centralFrame)
 	screenSize = QDesktopWidget().screenGeometry()
 	window.resize(screenSize.width()//2, screenSize.height()//2)
+	
 	return window
 
-def main():
+def initialize_gui(host, port, data):
 	app = QApplication([])
 
 	widgets = design_gui()
 	inputFrame = inputFrameLayout(widgets)
 
-	dialogueFrame = dialogueFrameLayout()
+	dialogue = QListWidget()
+	i = 0
+	for courseinfo in data.values():
+		dialogue.insertItem(i, courseinfo)
+		i += 1
+
+	dialogueFrame = dialogueFrameLayout(data, dialogue)
 
 	centralFrame = centralFrameLayout(inputFrame, dialogueFrame)
 
 	window = window_gui(centralFrame)
 
+	def submitButtonSlot():
+		request = {}
+		if not widgets[5].text() == '': request['-dept'] = widgets[5].text()
+		if not widgets[6].text() == '': request['-coursenum'] = widgets[6].text()
+		if not widgets[7].text() == '': request['-area'] = widgets[7].text()
+		if not widgets[8].text() == '': request['-title'] = widgets[8].text()
+
+		for thing in request.items():
+			print(thing)
+
+		success, data = get_class_list(host, port, request)	
+		if success:
+			dialogue.clear()
+			i = 0
+			for courseinfo in data.values():
+				dialogue.insertItem(i, str(courseinfo))
+				print(str(courseinfo))
+				i += 1
+			dialogue.repaint()
+
+	widgets[0].clicked.connect(submitButtonSlot)
+
 	window.show()
 	exit(app.exec_())
-
-if __name__ == '__main__':
-	main()

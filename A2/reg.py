@@ -7,7 +7,7 @@
 
 from reg_check import check_input
 from reg_client import get_class_list, get_class_details
-# from reg_gui import initialize_gui
+from reg_gui import initialize_gui
 
 def main():
 
@@ -19,7 +19,7 @@ def main():
 	if success:
 		for key, val in data.items():
 			print(val)
-		# initialize_gui(data)
+		initialize_gui(host, port, data)
 	else:
 		print('error:', data)
 
