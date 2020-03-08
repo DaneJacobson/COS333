@@ -13,7 +13,7 @@ def main():
 
 	host, port = check_input()
 
-	specs = {'-dept': 'cos', '-title': 'cs'} # '-dept': , '-coursenum': , '-area': , '-title':
+	specs = {} # '-dept': , '-coursenum': , '-area': , '-title':
 
 	success, data = get_class_list(host, port, specs)
 	if success:
@@ -21,10 +21,9 @@ def main():
 			print(val)
 		# initialize_gui(data)
 	else:
-		print('reg: ' + data)
+		print('error:', data)
 
-	classid = 8335
-	success, data = get_class_details(host, port, classid)
+	success, data = get_class_details(host, port, 8717)
 	print(data)
 
 #--------------------------------------------------------------------------------

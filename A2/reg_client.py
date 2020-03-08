@@ -24,25 +24,25 @@ def execute_client(host, port, specs):
 		data = load(inFlo)
 		sock.close()
 
-		if "error" in data: return False, data["error"]
-		return True, data
-
 	except Exception as e:
 		return False, str(e)
 
+	return ("error" not in data), data
 
 #--------------------------------------------------------------------------------
 
-# returns {'error': errormsg} or {...}
+# returns success, errormsg or success, {...}
 def get_class_list(host, port, specs):
 	specs["type"] = 'list'
-	return execute_client(host, port, specs)
+	success, msg = execute_client(host, port, specs)
+	if success: return True, msg
+	else: return False, msg['error']
 
 #--------------------------------------------------------------------------------
 
-# returns errormsg or detailsstr
+# returns success, errormsg or success, detailsstr
 def get_class_details(host, port, classid):
 	specs = {'classid': classid, 'type': 'details'}
 	success, msg = execute_client(host, port, specs)
 	if success: return True, msg['success']
-	else: return False, msg
+	else: return False, msg['error']
