@@ -23,7 +23,7 @@ class myListWidget(QListWidget):
 		self._host = host
 		self._port = port
 
-	def Activated(self, item):
+	def Activated(self, item, window):
 		# splits text by space to retrieve classid and calls regdetails
 		classid = item.text().split()[0]
 		success, data = get_class_details(self._host, self._port, classid)
@@ -185,7 +185,7 @@ def initialize_framework(host, port, data):
 
 #--------------------------------------------------------------------------------
 
-def signal_setup(host, port, widgets, dialogue):
+def signal_setup(host, port, widgets, dialogue, window):
 
 	def submitButtonSlot():
 		# creates request dictionary for server query
@@ -200,7 +200,7 @@ def signal_setup(host, port, widgets, dialogue):
 		if success:
 			dialogue.update_dialogue(host, port, data)
 		else:
-			QMessageBox.information(self, "Database-Related Error", data)
+			QMessageBox.information(window, "Database-Related Error", data)
 
 	widgets[0].clicked.connect(submitButtonSlot)
 	widgets[5].returnPressed.connect(submitButtonSlot)
@@ -216,7 +216,7 @@ def initialize_gui(host, port, data):
 	app, widgets, dialogue, window = initialize_framework(host, port, data)
 
 	# signals for GUI functionality
-	signal_setup(host, port, widgets, dialogue)
+	signal_setup(host, port, widgets, dialogue, window)
 
 	# epilogue
 	window.show()
