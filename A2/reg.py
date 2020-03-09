@@ -17,15 +17,9 @@ def main():
 
 	success, data = get_class_list(host, port, specs)
 	if success:
-		for val in data:
-			print(val)
 		initialize_gui(host, port, data)
 	else:
 		print('error:', data)
-
-	classid = 8717
-	success, data = get_class_details(host, port, classid)
-	print(data)
 
 #--------------------------------------------------------------------------------
 
