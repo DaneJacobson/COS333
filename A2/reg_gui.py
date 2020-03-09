@@ -23,7 +23,7 @@ class myListWidget(QListWidget):
 		self._host = host
 		self._port = port
 
-	def Activated(self, item, window):
+	def Activated(self, item):
 		# splits text by space to retrieve classid and calls regdetails
 		classid = item.text().split()[0]
 		success, data = get_class_details(self._host, self._port, classid)
