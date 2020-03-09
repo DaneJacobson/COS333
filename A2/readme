@@ -1,0 +1,13 @@
+dbasili danej
+
+David Basili, Dane Jacobson, Assignment 2
+
+Contribution by David Basili: I created the backend and communication between backend and frontend. This involved modifying our Assignment 1 code (which was luckily modular) to fit the needs of this assignment, creating and testing the communication between reg and regserver, and encapsulating it all into a few functions that could be called by the frontend to a) get a list of courses that met the specifications in a dictionary, b) get the details of one class when provided with the classid. I ended up sending dictionaries across from front-end to back-end, instead of sending multiple objects at a time (as was suggested as a convenient way to do it), since I felt that it was slightly easier for me to reason with the logic that way.
+
+Contribution by Dane Jacobson: I created the GUI for this assignment. This involved creating the layout of the GUI, and dealing with event handling when a user submits input or when a user double clicks on a specific class. Doing so required carefully creating and initializing the layout, and then taking advantage of lots of modularity (again) when different functions were called.
+
+Outside help: none
+
+Time doing assignment: 8 hours each
+
+Assignment Assessment: This assignment definitely helped us learn. It first of all made the 3 tier design much clearer to us, and helped make clear exactly how a backend server communicates with a database, and how that allows for good modularity in programming. Since we divided up the work, David learned a lot about the server-backend side of things but missed out on learning more frontend information, and Dane learned a lot about the frontend side of things but missed out on learning about the backend. While this isn't a fault of the assignment itself, strongly encouraging students to work together on each element of the assignment might solve this issue.
