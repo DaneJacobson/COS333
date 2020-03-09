@@ -9,10 +9,8 @@ from sys import exit
 from PyQt5.QtWidgets import QApplication, QFrame, QLabel
 from PyQt5.QtWidgets import QMainWindow, QGridLayout, QDesktopWidget
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QListWidget
-from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
 from reg_client import get_class_list, get_class_details
-
 
 def design_gui():
 	widgets = [None] * 9
@@ -93,27 +91,19 @@ def window_gui(centralFrame):
 	
 	return window
 
-class myListWidget(QListWidget):
-
-	def __init__(self, host, port):
-		super().__init__()
-		self._host = host
-		self._port = port
-
-	def Clicked(self, item):
-		classid = item.text().split()[0]
-		success, data = get_class_details(self._host, self._port, classid)
-		if success:
-			QMessageBox.information(self, "Class Details", data)
-
-def update_dialogue(host, port, dialogue, data):
-	dialogue.clear()
+def update_dialogue(data):
+	dialogue = QListWidget()
 	i = 0
 	for courseinfo in data:
 		dialogue.insertItem(i, courseinfo)
 		i += 1
-	dialogue.itemDoubleClicked.connect(dialogue.Clicked)
-	dialogue.update()
+	#dialogue.clicked.connect(course_clicked(dialogue))
+
+	return dialogue
+
+# def course_clicked(dialogue):
+# 	item = dialogue.currentItem()
+# 	print(item.text())
 
 def initialize_gui(host, port, data):
 	app = QApplication([])
@@ -121,8 +111,7 @@ def initialize_gui(host, port, data):
 	widgets = design_gui()
 	inputFrame = inputFrameLayout(widgets)
 
-	dialogue = myListWidget(host, port)
-	update_dialogue(host, port, dialogue, data)
+	dialogue = update_dialogue(data)
 
 	dialogueFrame = dialogueFrameLayout(data, dialogue)
 
@@ -141,9 +130,10 @@ def initialize_gui(host, port, data):
 			print(thing)
 
 		success, data = get_class_list(host, port, request)	
-		print(data)
 		if success:
-			update_dialogue(host, port, dialogue, data)
+			print('1')
+			dialogue = update_dialogue(data)
+			dialogue.repaint()
 
 	widgets[0].clicked.connect(submitButtonSlot)
 

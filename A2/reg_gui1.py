@@ -95,25 +95,28 @@ def window_gui(centralFrame):
 
 class myListWidget(QListWidget):
 
-	def __init__(self, host, port):
+	def __init__(self, host, port, data):
 		super().__init__()
 		self._host = host
 		self._port = port
+		i = 0
+		for courseinfo in data:
+			self.insertItem(i, courseinfo)
+			i += 1
 
 	def Clicked(self, item):
 		classid = item.text().split()[0]
 		success, data = get_class_details(self._host, self._port, classid)
 		if success:
-			QMessageBox.information(self, "Class Details", data)
+			QMessageBox.information(self, "ListWidget", data)
 
-def update_dialogue(host, port, dialogue, data):
-	dialogue.clear()
-	i = 0
-	for courseinfo in data:
-		dialogue.insertItem(i, courseinfo)
-		i += 1
-	dialogue.itemDoubleClicked.connect(dialogue.Clicked)
-	dialogue.update()
+	def update_dialogue(self, data):
+		i = 0
+		for courseinfo in data:
+			self._dialogue.insertItem(i, courseinfo)
+			i += 1
+		self.itemDoubleClicked.connect(dialogue.Clicked)
+		self.repaint()
 
 def initialize_gui(host, port, data):
 	app = QApplication([])
@@ -121,8 +124,7 @@ def initialize_gui(host, port, data):
 	widgets = design_gui()
 	inputFrame = inputFrameLayout(widgets)
 
-	dialogue = myListWidget(host, port)
-	update_dialogue(host, port, dialogue, data)
+	dialogue = myListWidget(host, port, data)
 
 	dialogueFrame = dialogueFrameLayout(data, dialogue)
 
@@ -143,7 +145,8 @@ def initialize_gui(host, port, data):
 		success, data = get_class_list(host, port, request)	
 		print(data)
 		if success:
-			update_dialogue(host, port, dialogue, data)
+			dialogue = update_dialogue(host, port, data)
+			dialogue.repaint()
 
 	widgets[0].clicked.connect(submitButtonSlot)
 

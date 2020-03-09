@@ -19,7 +19,7 @@ def main():
 	if success:
 		for val in data:
 			print(val)
-		# initialize_gui(host, port, data)
+		initialize_gui(host, port, data)
 	else:
 		print('error:', data)
 
