@@ -50,10 +50,11 @@ def index():
     query = {}
 
     database = Database()
-    database.connect()
     entries = database.search(query)
     print(entries)
-    database.disconnect()
+    formatted_txt = []
+    for entry in entries['success']:
+        formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
 
     entries = entries.get('success')
     html = render_template('index.html',

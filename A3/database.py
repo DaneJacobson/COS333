@@ -54,8 +54,11 @@ class Database:
 if __name__ == '__main__':
     database = Database()
     dictionary = {'classid':9980}
-    dictionary_search = {'-dept':'cos','-coursenum':'126'}
+    dictionary_search = {'-dept':'cos'}
     info = database.get_details(dictionary)
-    info_search = database.search(dictionary_search)
-    print(info)
-    print(info_search)
+    entries = database.search(dictionary_search)
+    formatted_txt = []
+    for entry in entries['success']:
+        formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
+    for txt in formatted_txt:
+        print(txt)
