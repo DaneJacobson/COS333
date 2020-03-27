@@ -17,47 +17,47 @@ app = Flask(__name__, template_folder='.')
 
 #-----------------------------------------------------------------------
 
-def getAmPm():
-    if strftime('%p') == "AM":
-        return 'morning'
-    return 'afternoon' 
-    
-def getCurrentTime():
-    return asctime(localtime())
-
-#-----------------------------------------------------------------------
-
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
- 
-    html = render_template('index.html',
-        ampm=getAmPm(),
-        currentTime=getCurrentTime())
-    response = make_response(html)
-    return response
     
-#-----------------------------------------------------------------------
-
-@app.route('/searchform', methods=['GET'])
-def searchForm():
-
     errorMsg = request.args.get('errorMsg')
     if errorMsg is None:
         errorMsg = ''
-    
-    prevAuthor = request.cookies.get('prevAuthor')
-    if prevAuthor is None:
-        prevAuthor = '(None)'
-    
-    html = render_template('searchform.html',
-        ampm=getAmPm(),
-        currentTime=getCurrentTime(),
-        errorMsg=errorMsg,
-        prevAuthor=prevAuthor)
+
+    prevDept = request.cookies.get('prevDept')
+    if prevDept is None:
+        prevDept = '(None)'
+
+    prevNum = request.cookies.get('prevNum')
+    if prevNum is None:
+        prevNum = '(None)'
+
+    prevArea = request.cookies.get('prevArea')
+    if prevArea is None:
+        prevArea = '(None)'
+
+    prevTitle = request.cookies.get('prevTitle')
+    if prevTitle is None:
+        prevTitle = '(None)'
+
+    dept = request.args.get('dept')
+    num = request.args.get('coursenum')
+    area = request.args.get('area')
+    title = request.args.get('title')
+
+    query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
+
+    database = Database()
+    database.connect()
+    entries = database.search(query)
+    database.disconnect()
+
+    html = render_template('index.html',
+        entries=entries)
     response = make_response(html)
-    return response    
-    
+    return response
+   
 #-----------------------------------------------------------------------
 
 @app.route('/searchresults', methods=['GET'])

@@ -54,5 +54,8 @@ class Database:
 if __name__ == '__main__':
     database = Database()
     dictionary = {'classid':9980}
+    dictionary_search = {'-dept':'cos','-coursenum':'126'}
     info = database.get_details(dictionary)
+    info_search = database.search(dictionary_search)
     print(info)
+    print(info_search)
