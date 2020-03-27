@@ -50,7 +50,8 @@ def norm(line):
 def call_db(cursor, instruction, classid):
 	cursor.execute(instruction, [classid])
 	row = cursor.fetchone()
-	if row is None and instruction == CLASS_LOC: print('regserver: classid does not exist', file=stderr)
+	if row is None and instruction == CLASS_LOC:
+		raise Exception("classid does not exist")
 	return row
 
 #--------------------------------------------------------------------------------
