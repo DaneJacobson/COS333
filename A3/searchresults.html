@@ -1,23 +1,17 @@
 {% if entries|length == 0: %}
-     (None)
+  (None)
 {% else: %}
-{%    for entry in entries: %}
-        {% data = entry.split() %}
-        {% classid = data[0] %}
-        {% dept = data[1] %}
-        {% coursenum = data[2] %}
-        {% area = data[3] %}
-        {% title = data[4] %}
-
-        {% classidlink = "/regdetails?classid=" + classid %}
-        <tr>
-          <td>
-            <a href="{{classidlink}}"></a>
-          </td>
-          <td>{{dept}}</td>
-          <td>{{coursenum}}</td>
-          <td>{{area}}</td>
-          <td>{{title}}</td>
-        </tr>
-{%    endfor %}
+  {% for entry in entries: %}
+    {% set data = entry.split(None, 4) %}
+    {% set classidlink = "/regdetails?classid=" + data[0] %}
+    <tr>
+      <td>
+        <a href="{{classidlink}}">{{data[0]}}</a>
+      </td>
+      <td>{{data[1]}}</td>
+      <td>{{data[2]}}</td>
+      <td>{{data[3]}}</td>
+      <td>{{data[4]}}</td>
+    </tr>
+  {% endfor %}
 {% endif %}
