@@ -1,4 +1,4 @@
-# COS333_A1
+# COS333
 
 <!-- 
 # To find - courseid, days, stanrttime, endgame, bldg, roomnum:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #-------------------------------------------------------------
-# regserver_db.py
+# regserver_reg_db.py
 # Author: Dane Jacobson and David Basili
 #-------------------------------------------------------------
 
