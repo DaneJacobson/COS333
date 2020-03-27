@@ -41,18 +41,21 @@ def index():
     if prevTitle is None:
         prevTitle = '(None)'
 
-    dept = request.args.get('dept')
-    num = request.args.get('coursenum')
-    area = request.args.get('area')
-    title = request.args.get('title')
+    # dept = request.args.get('dept')
+    # num = request.args.get('coursenum')
+    # area = request.args.get('area')
+    # title = request.args.get('title')
 
-    query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
+    #query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
+    query = {}
 
     database = Database()
     database.connect()
     entries = database.search(query)
+    print(entries)
     database.disconnect()
 
+    entries = entries.get('success')
     html = render_template('index.html',
         entries=entries)
     response = make_response(html)
@@ -61,7 +64,7 @@ def index():
 #-----------------------------------------------------------------------
 
 @app.route('/searchresults', methods=['GET'])
-def searchResults():
+def classdetails():
     
     author = request.args.get('author')
     if (author is None) or (author.strip() == ''):
