@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #-------------------------------------------------------------
-# regserver_db.py
+# regserver_reg_db.py
 # Author: Dane Jacobson and David Basili
 #-------------------------------------------------------------
 
@@ -48,30 +48,11 @@ def produce_output(dictionary):
 
 #--------------------------------------------------------------------------------
 
-def get_title(title):
-	CHARS_PER_LINE = 72 - 23
-
-	result, outline = '', ''
-	re_word = compile(r'\S+')
-	words = re_word.findall(title)
-	for word in words:
-		if len(outline) + len(word) > CHARS_PER_LINE:
-			result += outline.rstrip() + '\n                       '
-			outline = ''
-		outline += word + ' '
-	if outline:
-		result += outline.rstrip()
-	return result
-
-#--------------------------------------------------------------------------------
-
 def get_output(cursor):
-	entries = {}
+	entries = []
 	row = cursor.fetchone()
 	while row is not None:
-		classid, dept, crsnm, area = row[0], row[1], row[2], row[3]
-		title = get_title(row[4])
-		entries[classid] = '{:>5}{:>5}{:>7}{:>5} {}'.format(classid, dept, crsnm, area, title)
+		entries.append('{:>5}{:>5}{:>7}{:>5} {}'.format(row[0], row[1], row[2], row[3], row[4]))
 		row = cursor.fetchone()
 	return entries
 
@@ -83,18 +64,20 @@ def close(cursor, connection):
 
 #--------------------------------------------------------------------------------
 
-def access_db(dictionary):
+def access_reg_db(dictionary):
 	DATABASE = 'reg.sqlite'
 	error, connection, cursor = make_connection(DATABASE)
-	if error: return {'error': 'database reg.sqlite not found'}
+	if error: 
+		print('regserver: database %s not found' % DATABASE, file=stderr)
+		return {'error': 'regserver: database %s not found' % DATABASE}
 
 	try:
 		instruction, vals = produce_output(dictionary)
 		cursor.execute(instruction, vals)
-		entries = get_output(cursor)
+		entries = {'success': get_output(cursor)}
 	except Exception as e:
 		print('regserver: ' + str(e), file=stderr)
-		entries = {'error': str(e)}
+		entries = {'error': 'regserver: ' + str(e)}
 
 	close(cursor, connection)
 	return entries
