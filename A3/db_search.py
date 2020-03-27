@@ -46,7 +46,7 @@ def get_output(cursor):
 
 #-----------------------------------------------------------------------
 
-def search(self, cursor, dictionary):
+def db_search(cursor, dictionary):
     try:
         instruction, vals = produce_output(dictionary)
         cursor.execute(instruction, vals)

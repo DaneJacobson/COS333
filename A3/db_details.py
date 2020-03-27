@@ -90,7 +90,7 @@ def prof(cursor, classid):
 
 #-------------------------------------------------------------
 
-def get_details(self, cursor, dictionary):
+def db_details(cursor, dictionary):
     try:
         classid = dictionary['classid']
         string = class_loc(cursor, classid)

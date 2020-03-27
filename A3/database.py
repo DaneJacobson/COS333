@@ -8,8 +8,8 @@
 from os import path
 from sys import stderr
 from sqlite3 import connect
-from db_details import get_details
-from db_search import search
+from db_details import db_details
+from db_search import db_search
 #-------------------------------------------------------------
 
 class Database:
@@ -26,25 +26,25 @@ class Database:
         self._connection.close()
 
     def get_details(self, dictionary):
-        connect()
+        self.connect()
         if self._connection is None: 
             print('database: database %s not found' % DATABASE, file=stderr)
             return {'error': 'database: database %s not found' % DATABASE}
         cursor = self._connection.cursor()
-        info = fetch_details(cursor, dictionary)
+        info = db_details(cursor, dictionary)
         cursor.close()
-        disconnect()
+        self.disconnect()
         return info
 
     def search(self, dictionary):
-        connect()
+        self.connect()
         if self._connection is None: 
             print('database: database %s not found' % DATABASE, file=stderr)
             return {'error': 'database: database %s not found' % DATABASE}
         cursor = self._connection.cursor()
-        info = search(cursor, dictionary)
+        info = db_search(cursor, dictionary)
         cursor.close()
-        disconnect()
+        self.disconnect()
         return info
 
 #-----------------------------------------------------------------------
@@ -53,5 +53,6 @@ class Database:
 
 if __name__ == '__main__':
     database = Database()
-    info = database.search({})
+    dictionary = {'classid':9980}
+    info = database.get_details(dictionary)
     print(info)
