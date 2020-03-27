@@ -39,6 +39,7 @@ class myListWidget(QListWidget):
 		for courseinfo in data:
 			self.insertItem(i, courseinfo)
 			i += 1
+		self.setCurrentRow(0)
 
 #--------------------------------------------------------------------------------
 

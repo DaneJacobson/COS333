@@ -10,7 +10,7 @@ from sys import argv, stderr, exit
 #--------------------------------------------------------------------------------
 
 def report_err(msg):
-	print('regserver: '+msg, file=stderr)
+	print('regserver: '+msg, file=sys.stderr)
 	exit(1)
 
 #--------------------------------------------------------------------------------
