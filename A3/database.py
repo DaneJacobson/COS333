@@ -57,9 +57,9 @@ if __name__ == '__main__':
     dictionary_search = {'-dept':'cos'}
     info = database.get_details(dictionary)
     entries = database.search(dictionary_search)
-    print(entries)
-    formatted_txt = []
-    for entry in entries['success']:
-        formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
-    for txt in formatted_txt:
-        print(txt)
+    print(info)
+    # formatted_txt = []
+    # for entry in entries['success']:
+    #     formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
+    # for txt in formatted_txt:
+    #     print(txt)
