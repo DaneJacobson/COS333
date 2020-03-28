@@ -23,6 +23,7 @@ def produce_output(dictionary):
     stmtStr = STR_INTRO
     vals = []
     for key,value in dictionary.items():
+        if value is None: continue
         value = value.replace('%', '\\%')
         value = value.replace('_', '\\_')
         value = value.lower()
