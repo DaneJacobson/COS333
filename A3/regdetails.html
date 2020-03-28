@@ -1,18 +1,46 @@
-{% info = details.split('\n') %}
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Registrar's Office Class Details</title>
-   </head>
+   <html>
+      <head>
+         <title>Registrar's Office Class Details</title>
+      </head>
    <body>
-      <h1>Registrar's Office</h1>
-
+      <h1>Registrar's Office</h1>  
       <hr>
-      <h2>Class Details (class id {{classid}}</h2>
-      <strong>Course Id:</strong> {{info[0]}}
-         
-         {% include 'searchresults.html' %}
+      <h2>Class Details (class id {{details.get(classid)}})</h2>
+          
+      <strong>Course Id: </strong> {{details.get('Course Id')}}<br>
+      <strong>Days: </strong>{{details.get('Course Id')}}<br>
+      <strong>Start time: </strong>{{details.get('Course Id')}}<br>
+      <strong>End time: </strong>{{details.get('Course Id')}}<br>
+      <strong>Building: </strong>{{details.get('Course Id')}}<br>
+      <strong>Room: </strong>{{details.get('Course Id')}}<br>
+          
+      <hr>
+      <h2>Course Details (course id {{details.get(Course Id)}})</h2>
 
-      <hr>Created by David Basili and Dane Jacobson.<hr>
+
+          <strong>Dept and Number: </strong>
+          {{details.get('Course Id')}}<br>
+       
+          <strong>Dept and Number: </strong>
+          {{details.get('Course Id')}}<br>
+       
+          
+      <strong>Area: </strong>{{details.get('Course Id')}}<br>
+      <strong>Title: </strong>{{details.get('Course Id')}}<br>
+      <strong>Description: </strong>{{details.get('Course Id')}}<br>
+      <strong>Prerequisites: </strong>{{details.get('Course Id')}}<br>
+      
+
+         <strong>Professor: </strong> Dyane Harvey Salaam <br>
+      
+      
+      <hr>
+      Click here to do <a href="/?dept=&coursenum=&area=&title=">
+      another class search</a>
+      <hr>
+      Created by David Basili and Dane Jacobson.
+      <hr>
+          
    </body>
-</html>
+</html> 

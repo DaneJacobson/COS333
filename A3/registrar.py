@@ -20,26 +20,22 @@ app = Flask(__name__, template_folder='.')
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    
-    errorMsg = request.args.get('errorMsg')
-    if errorMsg is None:
-        errorMsg = ''
 
     prevDept = request.cookies.get('prevDept')
     if prevDept is None:
-        prevDept = '(None)'
+        prevDept = ''
 
     prevNum = request.cookies.get('prevNum')
     if prevNum is None:
-        prevNum = '(None)'
+        prevNum = ''
 
     prevArea = request.cookies.get('prevArea')
     if prevArea is None:
-        prevArea = '(None)'
+        prevArea = ''
 
     prevTitle = request.cookies.get('prevTitle')
     if prevTitle is None:
-        prevTitle = '(None)'
+        prevTitle = ''
 
     dept = request.args.get('dept')
     num = request.args.get('coursenum')
@@ -50,10 +46,28 @@ def index():
     database = Database()
     entries = database.search(query)
     
+    # if dept is None:
+    #     dept = ''
+    # if num is None:
+    #     num = ''
+    # if area is None:
+    #     area = ''
+    # if title is None:
+    #     title = ''
+
     entries = entries.get('success')
     html = render_template('index.html',
+        dept=dept,
+        num=num,
+        area=area,
+        title=title,
         entries=entries)
+
     response = make_response(html)
+    response.set_cookie('prevDept', dept)
+    response.set_cookie('prevAuthor', num)
+    response.set_cookie('prevAuthor', area)
+    response.set_cookie('prevAuthor', title)
     return response
    
 #-----------------------------------------------------------------------
