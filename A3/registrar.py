@@ -21,27 +21,52 @@ app = Flask(__name__, template_folder='.')
 @app.route('/index', methods=['GET'])
 def index():
 
-    prevDept = request.cookies.get('prevDept')
-    if prevDept is None:
-        prevDept = ''
+    # prevDept = request.cookies.get('prevDept')
+    # if prevDept is None:
+    #     prevDept = ''
 
-    prevNum = request.cookies.get('prevNum')
-    if prevNum is None:
-        prevNum = ''
+    # prevNum = request.cookies.get('prevNum')
+    # if prevNum is None:
+    #     prevNum = ''
 
-    prevArea = request.cookies.get('prevArea')
-    if prevArea is None:
-        prevArea = ''
+    # prevArea = request.cookies.get('prevArea')
+    # if prevArea is None:
+    #     prevArea = ''
 
-    prevTitle = request.cookies.get('prevTitle')
-    if prevTitle is None:
-        prevTitle = ''
+    # prevTitle = request.cookies.get('prevTitle')
+    # if prevTitle is None:
+    #     prevTitle = ''
+
+    # dept = request.args.get('dept')
+    # num = request.args.get('coursenum')
+    # area = request.args.get('area')
+    # title = request.args.get('title')
 
     dept = request.args.get('dept')
-    num = request.args.get('coursenum')
+    if dept is '':
+        dept = request.cookies.get('dept')
+    if dept is None:
+        dept = ''
+
+    coursenum = request.args.get('coursenum')
+    if coursenum is '':
+        coursenum = request.cookies.get('coursenum')
+    if coursenum is None:
+        coursenum = ''
+
     area = request.args.get('area')
+    if area is '':
+        area = request.cookies.get('area')
+    if area is None:
+        area = ''
+
     title = request.args.get('title')
-    query = {'-dept':dept,'-coursenum':num, '-area':area, '-title':title}
+    if title is '':
+        title = request.cookies.get('title')
+    if title is None:
+        title = ''
+
+    query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
 
     database = Database()
     entries = database.search(query)
@@ -58,16 +83,16 @@ def index():
     entries = entries.get('success')
     html = render_template('index.html',
         dept=dept,
-        num=num,
+        coursenum=coursenum,
         area=area,
         title=title,
         entries=entries)
 
     response = make_response(html)
-    response.set_cookie('prevDept', dept)
-    response.set_cookie('prevAuthor', num)
-    response.set_cookie('prevAuthor', area)
-    response.set_cookie('prevAuthor', title)
+    response.set_cookie('dept', dept)
+    response.set_cookie('coursenum', coursenum)
+    response.set_cookie('area', area)
+    response.set_cookie('title', title)
     return response
    
 #-----------------------------------------------------------------------
@@ -75,18 +100,17 @@ def index():
 @app.route('/regdetails', methods=['GET'])
 def regdetails():
     
+    classid = request.args.get('classid')
+    classid_query = {'classid':classid}
+
     database = Database()
-    database.connect()
-    books = database.search(author)
-    database.disconnect()
-     
-    html = render_template('searchresults.html',
-        ampm=getAmPm(),
-        currentTime=getCurrentTime(),
-        author=author,
-        books=books)
+    details = database.get_details(classid_query)
+
+    details = details.get('success')
+    html = render_template('regdetails.html',
+        classid=classid,
+        details=details)
     response = make_response(html)
-    response.set_cookie('prevAuthor', author)
     return response         
     
 #-----------------------------------------------------------------------

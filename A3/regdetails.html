@@ -6,38 +6,44 @@
    <body>
       <h1>Registrar's Office</h1>  
       <hr>
-      <h2>Class Details (class id {{details.get(classid)}})</h2>
+      <h2>Class Details (class id {{classid}})</h2>
           
-      <strong>Course Id: </strong> {{details.get('Course Id')}}<br>
-      <strong>Days: </strong>{{details.get('Course Id')}}<br>
-      <strong>Start time: </strong>{{details.get('Course Id')}}<br>
-      <strong>End time: </strong>{{details.get('Course Id')}}<br>
-      <strong>Building: </strong>{{details.get('Course Id')}}<br>
-      <strong>Room: </strong>{{details.get('Course Id')}}<br>
+      <strong>Course Id: </strong> {{details.get('course id')}}<br>
+      <strong>Days: </strong>{{details.get('days')}}<br>
+      <strong>Start time: </strong>{{details.get('start time')}}<br>
+      <strong>End time: </strong>{{details.get('end time')}}<br>
+      <strong>Building: </strong>{{details.get('building')}}<br>
+      <strong>Room: </strong>{{details.get('room')}}<br>
           
       <hr>
-      <h2>Course Details (course id {{details.get(Course Id)}})</h2>
+      <h2>Course Details (course id {{details.get('course id')}})</h2>
 
+      {% set deptnums = details.get('dept and number')%}
+      {% if deptnums|length == 0: %}
+         (None)
+      {% else: %}
+        {% for deptnum in deptnums: %}
+          <strong>Dept and Number: </strong>{{deptnum}}<br>
+        {% endfor %}
+      {% endif %}
+              
+      <strong>Area: </strong>{{details.get('area')}}<br>
+      <strong>Title: </strong>{{details.get('title')}}<br>
+      <strong>Description: </strong>{{details.get('description')}}<br>
+      <strong>Prerequisites: </strong>{{details.get('prerequisites')}}<br>
+      
+      {% set professors = details.get('professor')%}
+      {% if professors|length == 0: %}
+         (None)
+      {% else: %}
+        {% for prof in professors: %}
+          <strong>Professor: </strong>{{prof}}<br>
+        {% endfor %}
+      {% endif %}
 
-          <strong>Dept and Number: </strong>
-          {{details.get('Course Id')}}<br>
-       
-          <strong>Dept and Number: </strong>
-          {{details.get('Course Id')}}<br>
-       
-          
-      <strong>Area: </strong>{{details.get('Course Id')}}<br>
-      <strong>Title: </strong>{{details.get('Course Id')}}<br>
-      <strong>Description: </strong>{{details.get('Course Id')}}<br>
-      <strong>Prerequisites: </strong>{{details.get('Course Id')}}<br>
-      
-
-         <strong>Professor: </strong> Dyane Harvey Salaam <br>
-      
-      
       <hr>
-      Click here to do <a href="/?dept=&coursenum=&area=&title=">
-      another class search</a>
+      <p>Click here to do <a href="/">
+      another class search</a></p>
       <hr>
       Created by David Basili and Dane Jacobson.
       <hr>
