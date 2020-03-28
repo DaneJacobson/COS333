@@ -2,16 +2,15 @@
   (None)
 {% else: %}
   {% for entry in entries: %}
-    {% set data = entry.split(None, 4) %}
-    {% set classidlink = "/regdetails?classid=" + data[0] %}
+    {% set classidlink = "/regdetails?classid=" + entry.get('classid')|string %}
     <tr>
       <td>
-        <a href="{{classidlink}}">{{data[0]}}</a>
+        <a href="{{classidlink}}">{{entry.get('classid')}}</a>
       </td>
-      <td>{{data[1]}}</td>
-      <td>{{data[2]}}</td>
-      <td>{{data[3]}}</td>
-      <td>{{data[4]}}</td>
+      <td>{{entry.get('dept')}}</td>
+      <td>{{entry.get('coursenum')}}</td>
+      <td>{{entry.get('area')}}</td>
+      <td>{{entry.get('title')}}</td>
     </tr>
   {% endfor %}
 {% endif %}

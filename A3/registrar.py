@@ -41,21 +41,22 @@ def index():
     if prevTitle is None:
         prevTitle = '(None)'
 
-    # dept = request.args.get('dept')
-    # num = request.args.get('coursenum')
-    # area = request.args.get('area')
-    # title = request.args.get('title')
+    dept = request.args.get('dept')
+    print('Dept: ' + str(dept))
+    num = request.args.get('coursenum')
+    area = request.args.get('area')
+    title = request.args.get('title')
 
-    #query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
-    query = {}
+    query = {'-dept':dept,'-coursenum':num, '-area':area, '-title':title}
+    #query = {}
 
     database = Database()
     entries = database.search(query)
-    print(entries)
-    formatted_txt = []
-    for entry in entries['success']:
-        formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
+    # formatted_txt = []
+    # for entry in entries['success']:
+    #     formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
 
+    print(entries)
     entries = entries.get('success')
     html = render_template('index.html',
         entries=entries)
