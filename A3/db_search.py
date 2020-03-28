@@ -42,7 +42,6 @@ def get_output(cursor):
     row = cursor.fetchone()
     while row is not None:
         entries.append({'classid': str(row[0]), 'dept': row[1], 'coursenum': str(row[2]), 'area': row[3], 'title': row[4]})
-        # entries.append('{:>5}{:>5}{:>7}{:>5} {}'.format(row[0], row[1], row[2], row[3], row[4]))
         row = cursor.fetchone()
     return entries
 
