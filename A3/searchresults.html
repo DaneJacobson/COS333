@@ -2,7 +2,7 @@
   (None)
 {% else: %}
   {% for entry in entries: %}
-    {% set classidlink = "/regdetails?classid=" + entry.get('classid')|string %}
+    {% set classidlink = "/regdetails?classid=" + entry.get('classid') %}
     <tr>
       <td>
         <a href="{{classidlink}}">{{entry.get('classid')}}</a>

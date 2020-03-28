@@ -42,21 +42,14 @@ def index():
         prevTitle = '(None)'
 
     dept = request.args.get('dept')
-    print('Dept: ' + str(dept))
     num = request.args.get('coursenum')
     area = request.args.get('area')
     title = request.args.get('title')
-
     query = {'-dept':dept,'-coursenum':num, '-area':area, '-title':title}
-    #query = {}
 
     database = Database()
     entries = database.search(query)
-    # formatted_txt = []
-    # for entry in entries['success']:
-    #     formatted_txt.append('{:>5}{:>5}{:>7}{:>5} {}'.format(entry['classid'], entry['dept'], entry['coursenum'], entry['area'], entry['title']))
-
-    print(entries)
+    
     entries = entries.get('success')
     html = render_template('index.html',
         entries=entries)
@@ -65,14 +58,9 @@ def index():
    
 #-----------------------------------------------------------------------
 
-@app.route('/searchresults', methods=['GET'])
-def classdetails():
+@app.route('/regdetails', methods=['GET'])
+def regdetails():
     
-    author = request.args.get('author')
-    if (author is None) or (author.strip() == ''):
-        errorMsg = 'Please type an author name.'
-        return redirect(url_for('searchForm', errorMsg=errorMsg))
- 
     database = Database()
     database.connect()
     books = database.search(author)
