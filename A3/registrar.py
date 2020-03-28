@@ -21,48 +21,17 @@ app = Flask(__name__, template_folder='.')
 @app.route('/index', methods=['GET'])
 def index():
 
-    # prevDept = request.cookies.get('prevDept')
-    # if prevDept is None:
-    #     prevDept = ''
-
-    # prevNum = request.cookies.get('prevNum')
-    # if prevNum is None:
-    #     prevNum = ''
-
-    # prevArea = request.cookies.get('prevArea')
-    # if prevArea is None:
-    #     prevArea = ''
-
-    # prevTitle = request.cookies.get('prevTitle')
-    # if prevTitle is None:
-    #     prevTitle = ''
-
-    # dept = request.args.get('dept')
-    # num = request.args.get('coursenum')
-    # area = request.args.get('area')
-    # title = request.args.get('title')
-
     dept = request.args.get('dept')
-    if dept is '':
-        dept = request.cookies.get('dept')
+    coursenum = request.args.get('coursenum')
+    area = request.args.get('area')
+    title = request.args.get('title')
+
     if dept is None:
         dept = ''
-
-    coursenum = request.args.get('coursenum')
-    if coursenum is '':
-        coursenum = request.cookies.get('coursenum')
     if coursenum is None:
         coursenum = ''
-
-    area = request.args.get('area')
-    if area is '':
-        area = request.cookies.get('area')
     if area is None:
         area = ''
-
-    title = request.args.get('title')
-    if title is '':
-        title = request.cookies.get('title')
     if title is None:
         title = ''
 
@@ -70,17 +39,11 @@ def index():
 
     database = Database()
     entries = database.search(query)
-    
-    # if dept is None:
-    #     dept = ''
-    # if num is None:
-    #     num = ''
-    # if area is None:
-    #     area = ''
-    # if title is None:
-    #     title = ''
 
+    if 'error' in entries:
+        return redirect(url_for('error', errorMsg=entries.get('error')))
     entries = entries.get('success')
+
     html = render_template('index.html',
         dept=dept,
         coursenum=coursenum,
@@ -100,19 +63,41 @@ def index():
 @app.route('/regdetails', methods=['GET'])
 def regdetails():
     
+    dept = request.cookies.get('dept')
+    coursenum = request.cookies.get('coursenum')
+    area = request.cookies.get('area')
+    title = request.cookies.get('title')
+
     classid = request.args.get('classid')
     classid_query = {'classid':classid}
 
     database = Database()
     details = database.get_details(classid_query)
 
+    if 'error' in details:
+        return redirect(url_for('error', errorMsg=details.get('error')))
     details = details.get('success')
+
     html = render_template('regdetails.html',
         classid=classid,
+        dept=dept,
+        coursenum=coursenum,
+        area=area,
+        title=title,
         details=details)
     response = make_response(html)
     return response         
     
+#-----------------------------------------------------------------------
+
+@app.route('/error')
+def error():
+
+    html = render_template('error.html', 
+        errorMsg=request.args.get('errorMsg'))
+    response = make_response(html)
+    return response  
+
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
