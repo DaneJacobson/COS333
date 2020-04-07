@@ -6,11 +6,54 @@
 #--------------------------------------------------------------------------------
 
 from reg_check import report_err
-from socket import socket
-from socket import AF_INET, SOCK_STREAM
+from sys import argv, stderr
+from threading import Thread
+from queue import Queue
+from socket import socket, AF_INET, SOCK_STREAM
 from pickle import load, dump
+from PyQt5.QtWidgets import QApplication, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QFrame, QDesktopWidget
+from PyQt5.QtWidgets import QLabel, QLineEdit, QGridLayout
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtCore import QTimer
 
-#--------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
+
+class WorkerThread (Thread):
+
+    def __init__(self, host, port, specs, queue):
+        Thread.__init__(self)
+        self._host = host
+        self._port = port
+        self._specs = specs
+        self._queue = queue
+        self._shouldStop = False
+    
+    def stop(self):
+        self._shouldStop = True
+        
+    def run(self):   
+        try:     
+            sock = socket(AF_INET, SOCK_STREAM)
+            sock.connect((self._host, self._port))
+            
+            outFlo = sock.makefile(mode='wb')
+            dump(self._specs, outFlo)
+            outFlo.flush()
+        
+            inFlo = sock.makefile(mode='rb')
+            data = load(inFlo)
+            sock.close()
+
+        except Exception as e:
+            data = {'error': str(e)}
+        
+        if self._shouldStop:
+            return
+
+        self._queue.put(data)
+
+
 
 def execute_client(host, port, specs):
 	try:
@@ -35,7 +78,7 @@ def execute_client(host, port, specs):
 # returns success, errormsg or success, {...}
 def get_class_list(host, port, specs):
 	specs["type"] = 'list'
-	return execute_client(host, port, specs)
+	execute_client(host, port, specs)
 
 #--------------------------------------------------------------------------------
 

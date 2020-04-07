@@ -12,7 +12,11 @@ from PyQt5.QtWidgets import QPushButton, QLineEdit, QListWidget
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
-from reg_client import get_class_list, get_class_details
+from PyQt5.QtCore import QTimer
+from queue import Queue
+from reg_client import WorkerThread, get_class_details
+
+workerThread = None
 
 #--------------------------------------------------------------------------------
 
@@ -45,7 +49,7 @@ class myListWidget(QListWidget):
 
 def design_gui():
 	widgets = [None] * 9
-	widgets[0] = QPushButton('Submit')
+	# widgets[0] = QPushButton('Submit')
 	widgets[1] = QLabel('Dept:')
 	widgets[1].setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 	widgets[2] = QLabel('Number:')
@@ -126,7 +130,7 @@ def inputFrameLayout(widgets):
 
 #--------------------------------------------------------------------------------
 
-def dialogueFrameLayout(data, dialogue):
+def dialogueFrameLayout(dialogue):
 
 	dialogueFrameLayout = QGridLayout()
 	dialogueFrameLayout.setSpacing(0)
@@ -168,7 +172,7 @@ def window_gui(centralFrame):
 
 #--------------------------------------------------------------------------------
 
-def initialize_framework(host, port, data):
+def initialize_framework(host, port):
 	app = QApplication([])
 	font = QFont("Courier")
 	app.setFont(font)
@@ -177,8 +181,7 @@ def initialize_framework(host, port, data):
 	widgets = design_gui()
 	inputFrame = inputFrameLayout(widgets)
 	dialogue = myListWidget(host, port)
-	dialogue.update_dialogue(host, port, data)
-	dialogueFrame = dialogueFrameLayout(data, dialogue)
+	dialogueFrame = dialogueFrameLayout(dialogue)
 	centralFrame = centralFrameLayout(inputFrame, dialogueFrame)
 	window = window_gui(centralFrame)
 
@@ -186,38 +189,51 @@ def initialize_framework(host, port, data):
 
 #--------------------------------------------------------------------------------
 
-def signal_setup(host, port, widgets, dialogue, window):
+def signal_setup(host, port, widgets, dialogue, window, queue):
 
-	def submitButtonSlot():
-		# creates request dictionary for server query
+	def updateListSlot(): 
+		global workerThread
+
 		request = {}
 		if not widgets[5].text() == '': request['-dept'] = widgets[5].text()
 		if not widgets[6].text() == '': request['-coursenum'] = widgets[6].text()
 		if not widgets[7].text() == '': request['-area'] = widgets[7].text()
 		if not widgets[8].text() == '': request['-title'] = widgets[8].text()
 
-		# queries database and prints class details or error message
-		success, data = get_class_list(host, port, request)	
-		if success:
-			dialogue.update_dialogue(host, port, data)
-		else:
-			QMessageBox.information(window, "Database-Related Error", data)
+		if workerThread is not None:
+			workerThread.stop()
+		workerThread = WorkerThread(host, port, request, queue)
+		workerThread.start()
 
-	widgets[0].clicked.connect(submitButtonSlot)
-	widgets[5].returnPressed.connect(submitButtonSlot)
-	widgets[6].returnPressed.connect(submitButtonSlot)
-	widgets[7].returnPressed.connect(submitButtonSlot)
-	widgets[8].returnPressed.connect(submitButtonSlot)
+	widgets[5].textChanged.connect(updateListSlot)
+	widgets[6].textChanged.connect(updateListSlot)
+	widgets[7].textChanged.connect(updateListSlot)
+	widgets[8].textChanged.connect(updateListSlot)
 	dialogue.itemActivated.connect(dialogue.Activated)
+
+	updateListSlot()
 
 #--------------------------------------------------------------------------------
 
-def initialize_gui(host, port, data):
+def initialize_gui(host, port):
 	# GUI framework initialization
-	app, widgets, dialogue, window = initialize_framework(host, port, data)
+	app, widgets, dialogue, window = initialize_framework(host, port)
+
+	queue = Queue()
+	def pollQueue():
+		while not queue.empty():
+			data = queue.get()
+			if 'error' in data:
+				QMessageBox.information(window, "Database-Related Error", data['error'])
+			elif 'success' in data:
+				dialogue.update_dialogue(host, port, data['success'])
+
+	timer = QTimer()
+	timer.timeout.connect(pollQueue)
+	timer.start() 
 
 	# signals for GUI functionality
-	signal_setup(host, port, widgets, dialogue, window)
+	signal_setup(host, port, widgets, dialogue, window, queue)
 
 	# epilogue
 	window.show()

@@ -15,13 +15,13 @@ def main():
 
 	host, port = check_input()
 
-	specs = {} # '-dept': , '-coursenum': , '-area': , '-title':
+	# specs = {} # '-dept': , '-coursenum': , '-area': , '-title':
 
-	success, data = get_class_list(host, port, specs)
-	if success:
-		initialize_gui(host, port, data)
-	else:
-		print(data, file=stderr)
+	# success, data = get_class_list(host, port, specs)
+	# if success:
+	initialize_gui(host, port)
+	# else:
+	# 	print(data, file=stderr)
 
 #--------------------------------------------------------------------------------
 
