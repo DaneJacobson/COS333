@@ -49,7 +49,6 @@ class myListWidget(QListWidget):
 
 def design_gui():
 	widgets = [None] * 9
-	# widgets[0] = QPushButton('Submit')
 	widgets[1] = QLabel('Dept:')
 	widgets[1].setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 	widgets[2] = QLabel('Number:')
@@ -97,32 +96,17 @@ def fieldFrameLayout(widgets):
 
 #--------------------------------------------------------------------------------
 
-def submitFrameLayout(widgets):
-	submitFrameLayout = QGridLayout()
-	submitFrameLayout.setSpacing(0)
-	submitFrameLayout.setContentsMargins(0,0,0,0)
-	submitFrameLayout.addWidget(widgets[0],0,0) # submit
-	submitFrame = QFrame()
-	submitFrame.setLayout(submitFrameLayout)
-
-	return submitFrame
-
-#--------------------------------------------------------------------------------
-
 def inputFrameLayout(widgets):
 	labelFrame = labelFrameLayout(widgets)
 	fieldFrame = fieldFrameLayout(widgets)
-	submitFrame = submitFrameLayout(widgets)
 	inputFrameLayout = QGridLayout()
 	inputFrameLayout.setSpacing(0)
 	inputFrameLayout.setContentsMargins(0,0,0,0)
 	inputFrameLayout.setRowStretch(0,0)
 	inputFrameLayout.setColumnStretch(0,0)
 	inputFrameLayout.setColumnStretch(1,1)
-	inputFrameLayout.setColumnStretch(2,0)
 	inputFrameLayout.addWidget(labelFrame,0,0)
 	inputFrameLayout.addWidget(fieldFrame,0,1) 
-	inputFrameLayout.addWidget(submitFrame,0,2)
 	inputFrame = QFrame()
 	inputFrame.setLayout(inputFrameLayout)
 	
