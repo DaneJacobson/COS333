@@ -1,0 +1,12 @@
+{% for entry in entries: %}
+  {% set classidlink = "/regdetails?classid=" + entry.get('classid') %}
+  <tr>
+    <td>
+      <a href="{{classidlink}}">{{entry.get('classid')}}</a>
+    </td>
+    <td>{{entry.get('dept')}}</td>
+    <td>{{entry.get('coursenum')}}</td>
+    <td>{{entry.get('area')}}</td>
+    <td>{{entry.get('title')}}</td>
+  </tr>
+{% endfor %}

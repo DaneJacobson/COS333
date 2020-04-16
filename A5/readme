@@ -1,0 +1,15 @@
+dbasili danej
+
+David Basili, Dane Jacobson, Assignment 3
+
+David Basili Contribution: I put together the backend for this assignment and linking the backend to the frontend. This involved adapting the backend in order to allow the front end to more easily adapt to the program specifications of this assignment (such as sending format of information so that the front end could easily separate different fields, which I did using dictionaries instead of just strings as I had before). In addition, it involved doing error testing to ensure that errors were dealt with properly, and further modularizing it to create even cleaner and more maintainable code. Of course, I also helped in debugging front end errors that Dane was having.
+
+Dane Jacobson Contribution: Created the frontend application for the registrar. Created the jinja2 templates index.html, searchform.html, searchresults.html, error.html, and regdetails.html. searchresults.html and regdetails.html specifically receive dictionaries from registrar.py (info retrieved from the database), and write for loops in pseudo-python code to iterate lines of html to create the results table and account for multiple Deptarment and Number and Professor fields. He implemented registrar.py by creating three functions, index, regdetails, and error. Index constructs and performs the search query based on the info in the fields when the submit button is entered, and performs this query by reading the data off the url encoding. Index also sets cookies to make the application stateful - these cookies are retrieved by  regdetails and are inserted into the return url on the regdetails page, so that index.html will display the previous search made before the user clicked a specific course.
+
+Help Received: None
+
+Information Sources: Lecture notes, lecture slides, lecture videos, flask documentation, jinja2 documentation.
+
+Amount of time doing assignment: 12 hours
+
+Assessment of Assignment: This assignment did help us learn. It helped us understand how to program in the web browser and take advantage of services it offers (like cookies). One suggestion for improvement is to provide an example page that also includes possible errors, so we can see how it handles database and server errors.
