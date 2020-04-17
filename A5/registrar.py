@@ -64,6 +64,8 @@ def search():
 @app.route('/regdetails', methods=['GET'])
 def regdetails():
     
+    classid = request.args.get('classid')
+    
     # build details query and perform search
     classid_query = {'classid':classid}
     database = Database()
@@ -87,8 +89,9 @@ def regdetails():
 def error():
 
     # render error.html with application-specific message, and return
-    html = render_template('error.html', 
-        errorMsg=request.args.get('errorMsg'))
+    # html = render_template('error.html', 
+    #     errorMsg=request.args.get('errorMsg'))
+    html = '<h4>'+request.args.get('errorMsg')+'<h4>'
     response = make_response(html)
     return response  
 

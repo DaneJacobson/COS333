@@ -16,11 +16,11 @@ class Database:
     
     def __init__(self):
         self._connection = None
+        self.database = 'reg.sqlite'
 
     def connect(self):      
-        DATABASE_NAME = 'reg.sqlite'
-        if path.isfile(DATABASE_NAME):
-            self._connection = connect(DATABASE_NAME)
+        if path.isfile(self.database):
+            self._connection = connect(self.database)
                     
     def disconnect(self):
         self._connection.close()
@@ -28,8 +28,8 @@ class Database:
     def get_details(self, dictionary):
         self.connect()
         if self._connection is None: 
-            print('database: database %s not found' % DATABASE, file=stderr)
-            return {'error': 'database: database %s not found' % DATABASE}
+            print('database: database %s not found' % self.database, file=stderr)
+            return {'error': 'database: database %s not found' % self.database}
         cursor = self._connection.cursor()
         info = db_details(cursor, dictionary)
         cursor.close()
@@ -39,8 +39,8 @@ class Database:
     def search(self, dictionary):
         self.connect()
         if self._connection is None: 
-            print('database: database %s not found' % DATABASE, file=stderr)
-            return {'error': 'database: database %s not found' % DATABASE}
+            print('database: database %s not found' % self.database, file=stderr)
+            return {'error': 'database: database %s not found' % self.database}
         cursor = self._connection.cursor()
         info = db_search(cursor, dictionary)
         cursor.close()
