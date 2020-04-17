@@ -2,23 +2,90 @@
 <html>
    <head>
       <title>Registrar's Office Class Search</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
    </head>
    <body>
-      <h1>Registrar's Office</h1>
-      <h2>Class Search</h2>
-      <hr>
-      {% include 'searchform.html' %}
-      <hr>
-      <table>
-         <tr>
-            <td><strong>ClassId</strong></td>
-            <td><strong>Dept</strong></td>
-            <td><strong>Num</strong></td>
-            <td><strong>Area</strong></td>
-            <td><strong>Title</strong></td>
-         </tr>
-         {% include 'searchresults.html' %}
-      </table>
-      <hr>Created by David Basili and Dane Jacobson.<hr>
+
+      <div class="container bg-primary">
+         <center>
+            <h1>Registrar's Office: Class Search</h1>
+
+            <!--  Search form  -->
+            <div class="row">
+               <div class="col-sm-3">
+                  <input type="text" placeholder="Department" class="form-control" id="departmentInput">
+               </div>
+               <div class="col-sm-3">
+                  <input type="text" placeholder="Number" class="form-control" id="numberInput">
+               </div>
+               <div class="col-sm-3">
+                  <input type="text" placeholder="Area" class="form-control" id="areaInput">
+               </div>
+               <div class="col-sm-3">
+                  <input type="text" placeholder="Title" class="form-control" id="titleInput">
+               </div>
+            </div>
+            <br>
+         </center>
+      </div>
+
+      <!--  Search Results  -->
+      <div class="container" id="resultsTable"></div>
+
+      <div class="container bg-info">
+         <center>
+            Created by David Basili and Dane Jacobson.
+         </center>
+      </div>
+
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+      
+      <script>
+         
+         function setup()
+         {
+            $('#departmentInput').focus();
+            $('#departmentInput').on('input', getResults);
+            $('#numberInput').on('input', getResults);
+            $('#areaInput').on('input', getResults);
+            $('#titleInput').on('input', getResults);
+            getResults()
+         }
+         
+         function handleResponse(response)
+         {
+            if (response == "")
+               $('#resultsTable').html("");
+            else
+               $('#resultsTable').html(response);
+         }
+         
+         let request = null;
+         
+         function getResults()
+         {    
+            let department = encodeURIComponent($('#departmentInput').val());
+            let number = encodeURIComponent($('#numberInput').val());
+            let area = encodeURIComponent($('#areaInput').val());
+            let title = encodeURIComponent($('#titleInput').val());
+
+            let url = '/searchresults?department='+department+'&number='+number+'&area='+area+'&title='+title;
+            if (request != null)
+               request.abort();
+            request = $.ajax(
+               {
+                  type: "GET",
+                  url: url,
+                  success: handleResponse
+               }
+            );
+         }
+         
+         $('document').ready(setup);
+        
+      </script>
+
    </body>
 </html>

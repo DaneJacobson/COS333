@@ -19,23 +19,30 @@ app = Flask(__name__, template_folder='.')
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
+@app.route('/search', methods=['GET'])
 def index():
 
+    html = render_template('index.html')
+    response = make_response(html)
+    return response
+
+
+#-----------------------------------------------------------------------
+
+@app.route('/searchresults', methods=['GET'])
+def search():
+
     # generate search query
-    dept = request.args.get('dept')
-    coursenum = request.args.get('coursenum')
+    dept = request.args.get('department')
+    coursenum = request.args.get('number')
     area = request.args.get('area')
     title = request.args.get('title')
 
     # if this is the first page load, set fields to ''
-    if dept is None:
-        dept = ''
-    if coursenum is None:
-        coursenum = ''
-    if area is None:
-        area = ''
-    if title is None:
-        title = ''
+    if (dept is None) or (dept.strip() == ''): dept = ''
+    if (coursenum is None) or (coursenum.strip() == ''): coursenum = ''
+    if (area is None) or (area.strip() == ''): area = ''
+    if (title is None) or (title.strip() == ''): title = ''
 
     # build query and perform search
     query = {'-dept':dept,'-coursenum':coursenum, '-area':area, '-title':title}
@@ -47,31 +54,15 @@ def index():
         return redirect(url_for('error', errorMsg=entries.get('error')))
     entries = entries.get('success')
 
-    # render index.html, set cookies for fields, and return
-    html = render_template('index.html',
-        dept=dept,
-        coursenum=coursenum,
-        area=area,
-        title=title,
-        entries=entries)
+    # return html for table of classes
+    html = render_template('searchresults.html',entries=entries)
     response = make_response(html)
-    response.set_cookie('dept', dept)
-    response.set_cookie('coursenum', coursenum)
-    response.set_cookie('area', area)
-    response.set_cookie('title', title)
     return response
    
 #-----------------------------------------------------------------------
 
 @app.route('/regdetails', methods=['GET'])
 def regdetails():
-    
-    # fetch cookie fields
-    dept = request.cookies.get('dept')
-    coursenum = request.cookies.get('coursenum')
-    area = request.cookies.get('area')
-    title = request.cookies.get('title')
-    classid = request.args.get('classid')
     
     # build details query and perform search
     classid_query = {'classid':classid}
@@ -86,10 +77,6 @@ def regdetails():
     # render regdetails.html, and return
     html = render_template('regdetails.html',
         classid=classid,
-        dept=dept,
-        coursenum=coursenum,
-        area=area,
-        title=title,
         details=details)
     response = make_response(html)
     return response         
